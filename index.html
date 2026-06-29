@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentavio — Comparador de rentabilidad bancaria</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='10' y='10' width='100' height='100' rx='22' fill='%230E6B5C'/%3E%3Cpath d='M40 86 V34 H64 C74 34 80 40 80 50 C80 58 75 63 67 65 L82 86' fill='none' stroke='white' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='94' cy='30' r='6' fill='%2300C896'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF8;
+    --bg-raised: #FFFFFF;
+    --bg-soft: #F2F4F2;
+    --line: #E4E7E3;
+    --line-strong: #D3D7D1;
+    --ink: #0E1512;
+    --ink-dim: #4B564F;
+    --ink-faint: #8A938C;
+    --teal: #0E6B5C;
+    --teal-bright: #00C896;
+    --teal-soft: #E3F6EF;
+    --teal-soft-line: #BCE8DA;
+    --amber: #B5740C;
+    --amber-soft: #FBF1DD;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Inter', -apple-system, sans-serif;
+    --shadow-sm: 0 1px 2px rgba(14,21,18,0.04), 0 1px 1px rgba(14,21,18,0.03);
+    --shadow-md: 0 4px 16px rgba(14,21,18,0.06), 0 1px 3px rgba(14,21,18,0.04);
+    --shadow-lg: 0 12px 32px rgba(14,21,18,0.08), 0 2px 6px rgba(14,21,18,0.04);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;}
+
+  ::selection{background:var(--teal-soft-line);color:var(--ink);}
+
+  *:focus-visible{
+    outline:2px solid var(--teal-bright);
+    outline-offset:2px;
+    border-radius:4px;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+    position:sticky;
+    top:0;
+    background:rgba(250,250,248,0.88);
+    backdrop-filter:blur(8px);
+    z-index:50;
+  }
+  .header-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .brandmark{
+    display:flex;
+    align-items:center;
+    gap:9px;
+  }
+  .brandmark-icon{
+    width:28px;
+    height:28px;
+    flex-shrink:0;
+  }
+  .brandmark-text{
+    font-family:var(--sans);
+    font-weight:800;
+    font-size:18px;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+  }
+  .updated-pill{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--ink-faint);
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    padding:6px 12px;
+    border-radius:100px;
+    white-space:nowrap;
+  }
+  .updated-pill b{color:var(--ink-dim);font-weight:600;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:72px 0 56px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-260px; right:-180px;
+    width:560px; height:560px;
+    background:radial-gradient(circle, var(--teal-soft), transparent 70%);
+    pointer-events:none;
+  }
+  .hero-eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+  }
+  .hero-eyebrow::before{
+    content:"";
+    width:6px;height:6px;
+    background:var(--teal-bright);
+    border-radius:50%;
+    display:inline-block;
+  }
+  h1{
+    font-family:var(--sans);
+    font-weight:800;
+    font-size:clamp(2.2rem, 4.6vw, 3.6rem);
+    line-height:1.08;
+    letter-spacing:-0.025em;
+    max-width:820px;
+    color:var(--ink);
+  }
+  h1 em{
+    font-style:normal;
+    font-weight:800;
+    color:var(--teal);
+  }
+  .hero-sub{
+    margin-top:20px;
+    max-width:600px;
+    font-size:1.05rem;
+    color:var(--ink-dim);
+    line-height:1.6;
+  }
+  .hero-stats{
+    margin-top:44px;
+    display:grid;
+    grid-template-columns:repeat(4, auto);
+    gap:36px;
+  }
+  .hstat-num{
+    font-family:var(--mono);
+    font-size:1.9rem;
+    font-weight:700;
+    color:var(--teal);
+    line-height:1;
+  }
+  .hstat-label{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    margin-top:8px;
+    max-width:130px;
+  }
+
+  @media (max-width:760px){
+    .hero-stats{grid-template-columns:repeat(2,auto);row-gap:24px;}
+  }
+
+  /* ---------- WIZARD ---------- */
+  .wizard{
+    padding:96px 0 110px;
+    min-height:560px;
+    display:flex;
+    align-items:center;
+  }
+  .wizard .wrap{width:100%;}
+
+  .wstep-progress{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:28px;
+  }
+
+  .wizard-steps{
+    max-width:760px;
+    margin:0 auto;
+  }
+
+  .wstep-panel{display:none;}
+  .wstep-panel.active{display:block;animation:fadeUp .45s ease;}
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .wstep-panel h2{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:clamp(2rem, 4.2vw, 3rem);
+    line-height:1.12;
+    margin-bottom:44px;
+    color:var(--ink);
+    letter-spacing:-0.025em;
+  }
+  .wstep-options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:600px){
+    .wstep-options{grid-template-columns:1fr;}
+    .wizard{padding:64px 0 80px;}
+  }
+  .wopt{
+    text-align:left;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:24px 26px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    transition:all .2s ease;
+    font-family:var(--sans);
+  }
+  .wopt:hover{
+    border-color:var(--line-strong);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-md);
+  }
+  .wopt.selected{
+    border-color:var(--teal);
+    background:var(--teal-soft);
+  }
+  .wopt-title{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:1.1rem;
+    color:var(--ink);
+    letter-spacing:-0.015em;
+  }
+  .wopt-desc{
+    font-size:13.5px;
+    color:var(--ink-faint);
+    line-height:1.5;
+  }
+  .wback{
+    margin-top:18px;
+    background:none;
+    border:none;
+    color:var(--ink-faint);
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    padding:6px 0;
+  }
+  .wback:hover{color:var(--ink-dim);}
+
+  .skip-wizard{
+    margin-top:36px;
+    background:none;
+    border:none;
+    color:var(--ink-faint);
+    font-family:var(--sans);
+    font-weight:500;
+    font-size:13px;
+    cursor:pointer;
+    text-decoration:underline;
+    text-decoration-color:var(--line-strong);
+    padding:0;
+  }
+  .skip-wizard:hover{color:var(--ink-dim);}
+
+  .results-hero{padding:40px 0 28px;border-bottom:1px solid var(--line);}
+  .results-hero-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .results-hero h1{
+    font-size:clamp(1.5rem, 2.8vw, 1.9rem);
+    margin:0;
+  }
+  .result-chips{
+    margin-top:22px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .result-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--teal-soft);
+    border:1px solid var(--teal-soft-line);
+    color:var(--teal);
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:12.5px;
+    padding:7px 12px;
+    border-radius:100px;
+  }
+  .result-chip .chip-label{
+    color:var(--ink-faint);
+    font-weight:500;
+  }
+  .redo-wizard{
+    margin-top:24px;
+    background:var(--bg-raised);
+    border:1.5px solid var(--line);
+    color:var(--ink-dim);
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    padding:10px 18px;
+    border-radius:10px;
+    box-shadow:var(--shadow-sm);
+  }
+  .redo-wizard:hover{border-color:var(--line-strong);color:var(--ink);box-shadow:var(--shadow-md);}
+
+  /* ---------- CONTROLS ---------- */
+  .controls{
+    padding:32px 0 0;
+    position:sticky;
+    top:61px;
+    background:var(--bg);
+    z-index:40;
+    border-bottom:1px solid transparent;
+  }
+  .controls.is-stuck{
+    border-bottom-color:var(--line);
+  }
+  .tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .tab-btn{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:13.5px;
+    background:var(--bg-raised);
+    border:1.5px solid var(--line);
+    color:var(--ink-dim);
+    padding:9px 16px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .tab-btn .count{
+    color:var(--ink-faint);
+    margin-left:4px;
+    font-weight:500;
+  }
+  .tab-btn:hover{
+    border-color:var(--line-strong);
+    color:var(--ink);
+  }
+  .tab-btn.active{
+    background:var(--teal);
+    color:#fff;
+    border-color:var(--teal);
+  }
+  .tab-btn.active .count{color:#fff;opacity:0.7;}
+
+  .filter-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--line);
+  }
+  .filter-row select, .filter-row input{
+    background:var(--bg-raised);
+    border:1.5px solid var(--line);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:500;
+    font-size:13.5px;
+    padding:9px 12px;
+    border-radius:8px;
+  }
+  .filter-row label{
+    font-size:12px;
+    color:var(--ink-faint);
+    font-family:var(--sans);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    margin-right:6px;
+  }
+  .filter-group{display:flex;align-items:center;}
+  .sort-toggle{
+    margin-left:auto;
+    display:flex;
+    gap:2px;
+    background:var(--bg-soft);
+    border:1.5px solid var(--line);
+    border-radius:9px;
+    padding:3px;
+  }
+  .sort-toggle button{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:12.5px;
+    background:none;
+    border:none;
+    color:var(--ink-faint);
+    padding:7px 12px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .sort-toggle button.active{
+    background:var(--bg-raised);
+    color:var(--ink);
+    box-shadow:var(--shadow-sm);
+  }
+
+  /* ---------- TABLE SECTION ---------- */
+  .results{padding:32px 0 80px;}
+  .results-count{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    margin-bottom:16px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+
+  .empty-state{
+    background:var(--bg-raised);
+    border:1.5px dashed var(--line-strong);
+    border-radius:16px;
+    padding:40px 28px;
+    text-align:center;
+  }
+  .empty-state p{
+    font-size:15px;
+    color:var(--ink-dim);
+    margin-bottom:6px;
+  }
+  .empty-state .empty-sub{
+    font-size:13px;
+    color:var(--ink-faint);
+  }
+
+  .card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px 26px;
+    margin-bottom:12px;
+    display:grid;
+    grid-template-columns:1fr auto 200px;
+    gap:24px;
+    align-items:start;
+    transition:all .15s ease;
+    box-shadow:var(--shadow-sm);
+  }
+  .card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+  .card.is-top{
+    border-color:var(--teal-soft-line);
+    background:linear-gradient(135deg, var(--teal-soft) 0%, var(--bg-raised) 55%);
+  }
+
+  .card-main{min-width:0;}
+  .card-toprow{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .entity-name{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:1.2rem;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .product-name{
+    font-size:13.5px;
+    color:var(--ink-faint);
+    font-weight:500;
+  }
+  .badge{
+    font-family:var(--sans);
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    padding:3px 9px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    color:var(--ink-faint);
+    background:var(--bg-soft);
+  }
+  .badge.neo{border-color:var(--teal-soft-line);color:var(--teal);background:var(--teal-soft);}
+  .badge.top{
+    background:var(--teal-bright);
+    color:#053b32;
+    border:none;
+    font-weight:800;
+  }
+  .badge.nomina-req{
+    border-color:#E8C9A6;
+    color:var(--amber);
+    background:var(--amber-soft);
+  }
+  .badge.nomina-rec{
+    border-color:var(--line-strong);
+    color:var(--ink-dim);
+    background:var(--bg-soft);
+  }
+  .badge.nomina-libre{
+    border-color:var(--teal-soft-line);
+    color:var(--teal);
+    background:var(--teal-soft);
+  }
+  .badge.iban-ext{
+    border-color:#D8C4E8;
+    color:#6B3FA0;
+    background:#F3EBFA;
+  }
+  .card-desc{
+    font-size:14px;
+    color:var(--ink-dim);
+    line-height:1.55;
+    margin-top:6px;
+    max-width:560px;
+  }
+  .card-conditions{
+    margin-top:14px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .cond{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-weight:500;
+  }
+  .cond b{
+    color:var(--ink);
+    font-weight:700;
+    font-family:var(--mono);
+  }
+  .card-verdict{
+    margin-top:14px;
+    font-size:13px;
+    font-style:normal;
+    font-weight:500;
+    color:var(--ink-dim);
+    border-left:2.5px solid var(--teal-soft-line);
+    padding-left:12px;
+  }
+
+  .card-rate{
+    text-align:right;
+    white-space:nowrap;
+  }
+  .rate-num{
+    font-family:var(--mono);
+    font-size:2rem;
+    font-weight:700;
+    color:var(--teal);
+    line-height:1;
+  }
+  .rate-num.rust{color:var(--amber);}
+  .rate-label{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:11px;
+    color:var(--ink-faint);
+    margin-top:4px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+  .rate-cap{
+    font-size:11.5px;
+    color:var(--ink-faint);
+    margin-top:8px;
+    max-width:140px;
+    font-weight:500;
+  }
+
+  .card-fgd{
+    text-align:right;
+  }
+  .fgd-flag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:11px;
+    color:var(--ink-faint);
+    margin-bottom:8px;
+    justify-content:flex-end;
+  }
+  .fgd-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--teal-bright);
+  }
+  .fgd-dot.warn{background:var(--amber);}
+  .deadline{
+    font-size:11.5px;
+    color:var(--amber);
+    font-family:var(--sans);
+    font-weight:700;
+    background:var(--amber-soft);
+    padding:3px 9px;
+    border-radius:100px;
+    display:inline-block;
+  }
+  .no-deadline{
+    font-size:11.5px;
+    color:var(--ink-faint);
+    font-family:var(--sans);
+    font-weight:500;
+  }
+  .offer-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-top:14px;
+    background:var(--teal);
+    color:#fff;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:13px;
+    padding:9px 16px;
+    border-radius:9px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  .offer-btn:hover{
+    background:var(--ink);
+    transform:translateY(-1px);
+  }
+
+  @media (max-width:860px){
+    .card{grid-template-columns:1fr;gap:16px;}
+    .card-rate, .card-fgd{text-align:left;}
+    .fgd-flag{justify-content:flex-start;}
+    .offer-btn{width:100%;justify-content:center;}
+  }
+
+  /* ---------- METHODOLOGY ---------- */
+  .method{
+    border-top:1px solid var(--line);
+    padding:28px 0;
+    background:var(--bg-soft);
+  }
+  .method-toggle{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:8px 0;
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:1rem;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .method-toggle-icon{
+    font-size:1.3rem;
+    font-weight:400;
+    color:var(--ink-faint);
+    transition:transform .25s ease;
+    line-height:1;
+  }
+  .method-toggle.open .method-toggle-icon{
+    transform:rotate(45deg);
+  }
+  .method-panel{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .35s ease;
+  }
+  .method-panel.open{
+    max-height:1200px;
+  }
+  .method-cols{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:32px 28px;
+    padding-top:28px;
+  }
+  .method-cols h3{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--teal);
+    margin-bottom:10px;
+  }
+  .method-cols p{
+    font-size:14px;
+    color:var(--ink-dim);
+    line-height:1.65;
+  }
+  @media (max-width:760px){
+    .method-cols{grid-template-columns:1fr;gap:24px;}
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:32px 0 48px;
+  }
+  .foot-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  footer p{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    line-height:1.6;
+    max-width:640px;
+  }
+  footer .signature{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:14px;
+    color:var(--ink-dim);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <div class="brandmark">
+      <svg class="brandmark-icon" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="100" height="100" rx="22" fill="#0E6B5C"/>
+        <path d="M40 86 V34 H64 C74 34 80 40 80 50 C80 58 75 63 67 65 L82 86"
+              fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="94" cy="30" r="6" fill="#00C896"/>
+      </svg>
+      <span class="brandmark-text">Rentavio</span>
+    </div>
+    <div class="updated-pill">Datos a <b>18 jun 2026</b> · fuentes en metodología</div>
+  </div>
+</header>
+
+<!-- ===================== WIZARD ===================== -->
+<section class="wizard" id="wizardSection">
+  <div class="wrap">
+    <div class="wstep-progress" id="wstepProgress">Paso 1 de 4</div>
+
+    <div class="wizard-steps">
+      <div class="wstep-panel active" data-panel="0">
+        <h2>¿Qué estás buscando?</h2>
+        <div class="wstep-options" id="optProducto">
+          <button class="wopt" data-value="remunerada">
+            <span class="wopt-title">Cuenta remunerada</span>
+            <span class="wopt-desc">Rentabilidad sobre el saldo, sin atarte. Dinero siempre disponible.</span>
+          </button>
+          <button class="wopt" data-value="deposito">
+            <span class="wopt-title">Depósito a plazo</span>
+            <span class="wopt-desc">Más rentabilidad a cambio de inmovilizar el dinero un tiempo fijo.</span>
+          </button>
+          <button class="wopt" data-value="nomina">
+            <span class="wopt-title">Cuenta con bonificación</span>
+            <span class="wopt-desc">Dinero o regalos por domiciliar tu nómina en una entidad nueva.</span>
+          </button>
+          <button class="wopt" data-value="todos">
+            <span class="wopt-title">Aún no lo sé — muéstrame todo</span>
+            <span class="wopt-desc">Quiero comparar las tres categorías a la vez.</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="wstep-panel" data-panel="1">
+        <h2>¿Cuánto dinero quieres mover?</h2>
+        <div class="wstep-options" id="optMonto">
+          <button class="wopt" data-value="bajo">
+            <span class="wopt-title">Menos de 3.000€</span>
+            <span class="wopt-desc">Te interesan ofertas sin mínimo de entrada exigente.</span>
+          </button>
+          <button class="wopt" data-value="medio">
+            <span class="wopt-title">3.000€ – 15.000€</span>
+            <span class="wopt-desc">Rango donde entran casi todas las ofertas del mercado.</span>
+          </button>
+          <button class="wopt" data-value="alto">
+            <span class="wopt-title">15.000€ – 50.000€</span>
+            <span class="wopt-desc">Algunos topes de saldo remunerado empiezan a quedarte cortos.</span>
+          </button>
+          <button class="wopt" data-value="muyalto">
+            <span class="wopt-title">Más de 50.000€</span>
+            <span class="wopt-desc">Vas a repartir entre varias ofertas casi seguro — te lo señalamos.</span>
+          </button>
+        </div>
+        <button class="wback" id="backTo0">← Volver</button>
+      </div>
+
+      <div class="wstep-panel" data-panel="2">
+        <h2>¿Cuánto tiempo puede estar inmovilizado?</h2>
+        <div class="wstep-options" id="optPlazo">
+          <button class="wopt" data-value="disponible" id="optDisponible">
+            <span class="wopt-title">Quiero el dinero siempre disponible</span>
+            <span class="wopt-desc">Sin plazos. Puede hacer falta en cualquier momento.</span>
+          </button>
+          <button class="wopt" data-value="corto">
+            <span class="wopt-title">Hasta 6 meses</span>
+            <span class="wopt-desc">Puedo prescindir de él un tiempo corto.</span>
+          </button>
+          <button class="wopt" data-value="medio">
+            <span class="wopt-title">Entre 6 y 18 meses</span>
+            <span class="wopt-desc">No lo voy a necesitar este año.</span>
+          </button>
+          <button class="wopt" data-value="largo">
+            <span class="wopt-title">Más de 18 meses</span>
+            <span class="wopt-desc">Es ahorro a medio plazo, no lo voy a tocar.</span>
+          </button>
+        </div>
+        <button class="wback" id="backTo1">← Volver</button>
+      </div>
+
+      <div class="wstep-panel" data-panel="3">
+        <h2>¿Quieres domiciliar tu nómina para conseguir mejores condiciones?</h2>
+        <div class="wstep-options" id="optNomina">
+          <button class="wopt" data-value="con">
+            <span class="wopt-title">Sí, no me importa domiciliarla</span>
+            <span class="wopt-desc">Quiero ver también las ofertas que exigen nómina a cambio de más rentabilidad o bonus.</span>
+          </button>
+          <button class="wopt" data-value="sin">
+            <span class="wopt-title">No, prefiero no atarme a eso</span>
+            <span class="wopt-desc">Solo quiero ofertas que no exijan domiciliar la nómina.</span>
+          </button>
+          <button class="wopt" data-value="todos">
+            <span class="wopt-title">Me da igual, muéstrame todo</span>
+            <span class="wopt-desc">Decido después de ver las condiciones de cada una.</span>
+          </button>
+        </div>
+        <button class="wback" id="backTo2">← Volver</button>
+      </div>
+    </div>
+
+    <button class="skip-wizard" id="skipWizard">O salta esto y mira la tabla completa →</button>
+  </div>
+</section>
+
+<!-- ===================== RESULTS HEADER (shown after wizard) ===================== -->
+<section class="results-hero" id="resultsHero" style="display:none;">
+  <div class="wrap">
+    <div class="results-hero-top">
+      <h1 id="resultsHeadline">Esto es lo que encaja contigo</h1>
+      <button class="redo-wizard" id="redoWizard">↺ Repetir cuestionario</button>
+    </div>
+    <div class="result-chips" id="resultChips"></div>
+  </div>
+</section>
+
+
+<div class="controls" id="controls" style="display:none;">
+  <div class="wrap">
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-cat="todos">Todos <span class="count">(89)</span></button>
+      <button class="tab-btn" data-cat="remunerada">Cuentas remuneradas <span class="count">(39)</span></button>
+      <button class="tab-btn" data-cat="deposito">Depósitos a plazo <span class="count">(33)</span></button>
+      <button class="tab-btn" data-cat="nomina">Cuentas con bonificación <span class="count">(17)</span></button>
+    </div>
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>Tipo de entidad</label>
+        <select id="filterTipo">
+          <option value="todos">Todas</option>
+          <option value="tradicional">Banca tradicional</option>
+          <option value="neobanco">Neobanco / fintech</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Nómina</label>
+        <select id="filterNomina">
+          <option value="todos">Da igual</option>
+          <option value="sin">Solo sin nómina</option>
+          <option value="con">Solo con nómina</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Sin condiciones</label>
+        <select id="filterCondicion">
+          <option value="todos">Da igual</option>
+          <option value="sin">Solo sin nómina / vinculación</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>IBAN</label>
+        <select id="filterIban">
+          <option value="todos">Da igual</option>
+          <option value="espanol">Solo IBAN español</option>
+        </select>
+      </div>
+      <div class="sort-toggle" id="sortToggle">
+        <button class="active" data-sort="rate">Por rentabilidad</button>
+        <button data-sort="name">Por entidad</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="results" id="resultsSection" style="display:none;">
+  <div class="wrap">
+    <div class="results-count" id="resultsCount">89 ofertas</div>
+    <div id="cardContainer"></div>
+  </div>
+</section>
+
+<section class="method">
+  <div class="wrap">
+    <button class="method-toggle" id="methodToggle">
+      <span>Cómo leer esta tabla</span>
+      <span class="method-toggle-icon">＋</span>
+    </button>
+    <div class="method-panel" id="methodPanel">
+      <div class="method-cols">
+        <div>
+          <h3>Lo que no te suelen decir</h3>
+          <p>La TAE anunciada casi nunca aplica a todo tu saldo ni a todo el año. Fíjate en el <b>saldo máximo remunerado</b> y en la <b>fecha límite de la promoción</b> de cada oferta: pasada esa fecha, el tipo cae a la oferta "base" del banco, normalmente muy inferior.</p>
+        </div>
+        <div>
+          <h3>Fiscalidad</h3>
+          <p>Los intereses de cuentas y depósitos tributan como rendimiento del capital mobiliario: 19% hasta 6.000€, 21% entre 6.000€ y 50.000€, 23% entre 50.000€ y 200.000€, y 27% por encima. Los regalos por domiciliar nómina también tributan y Hacienda los recibe directamente del banco.</p>
+        </div>
+        <div>
+          <h3>Garantía de depósitos</h3>
+          <p>Todas las entidades aquí están adheridas a un Fondo de Garantía de Depósitos europeo (100.000€ por titular y entidad), pero el fondo varía por país de origen del banco. Un neobanco con matriz en Alemania, Lituania o Malta usa el fondo de ese país, no el español — la cobertura es equivalente, pero el proceso de reclamación puede no serlo.</p>
+        </div>
+        <div>
+          <h3>Entidades sin sucursal en España</h3>
+          <p>Las ofertas marcadas con "IBAN extranjero" no tienen sucursal en España. Sus intereses no aparecen automáticamente en el borrador de la Renta y, si tienes más de 50.000€ en cuentas extranjeras a 31 de diciembre (o de saldo medio en el cuarto trimestre), puede ser obligatorio presentar el Modelo 720. Algunas, contratadas vía plataformas como Raisin, pueden además aplicar retención en origen según el país.</p>
+        </div>
+        <div>
+          <h3>Actualización de datos</h3>
+          <p>Este mercado cambia mes a mes: las promociones tienen fecha de caducidad y los bancos ajustan tipos según el BCE. Esta tabla refleja el corte del 18 de junio de 2026 — antes de mover tu dinero, confirma la condición vigente en la web oficial del banco.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <p>Datos recopilados de fuentes públicas (comparadores especializados y webs oficiales de cada entidad) a fecha 18 de junio de 2026. No es asesoramiento financiero ni recomendación de contratación — verifica siempre las condiciones actuales antes de decidir.</p>
+    <div class="signature">— El coste del dinero parado</div>
+  </div>
+</footer>
+
+<script>
+const DATA = [
+  // ===================== CUENTAS REMUNERADAS — SIN CONDICIONES =====================
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Renault Bank", producto:"Cuenta Remunerada",
+    rate:2.17, rateLabel:"TAE", desc:"Remuneración fija sin condiciones de nómina, vinculación ni ser nuevo cliente.",
+    cap:"Sin límite anunciado", condiciones:[["Saldo máx.","Sin tope público"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"De las pocas opciones que no depende de ser nuevo cliente ni de promoción con fecha de caducidad — lo que ves es lo que hay.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://renaultbank.es/productos/"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Cajamar", producto:"Cuenta Online (sin condiciones)",
+    rate:1.76, rateLabel:"TAE hasta 50k€", desc:"1,76% hasta 50.000€ y 1,00% por encima de esa cifra, sin necesidad de domiciliar nada.",
+    cap:"1,76% hasta 50.000€, 1,00% resto", condiciones:[["Saldo máx.","50.000€ al tipo alto"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"Tramo alto competitivo para saldos medios, y a diferencia de su versión con Bizum, este no caduca a los 6 meses.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.grupocooperativocajamar.es/es/particulares/cuentas/cuenta-wefferent-ahorro/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Pibank", producto:"Cuenta Remunerada",
+    rate:1.76, rateLabel:"TAE", desc:"Marca comercial de Banco Pichincha (mismo banco, misma licencia). Sin condiciones de vinculación.",
+    cap:"Sin tope público", condiciones:[["Saldo máx.","Sin tope público"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"Al ser la misma entidad que Banco Pichincha, el respaldo y el FGD son idénticos — la diferencia es solo de marca y producto digital.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.pibank.es/cuenta-remunerada/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Indexa Capital", producto:"Cuenta Remunerada (A&G Banco)",
+    rate:1.75, rateLabel:"TAE", desc:"Gestionada por A&G Banco S.A.U. El tipo se referencia al BCE menos 0,50 puntos, así que varía con la política monetaria.",
+    cap:"Desde 20.000€", condiciones:[["Mínimo","20.000€"],["Permanencia","No"],["Referenciado a","BCE - 0,50%"]],
+    verdict:"El mínimo de 20.000€ la descarta para ahorro pequeño, pero el tipo flotante referenciado al BCE es más transparente que una promoción con fecha de caducidad oculta.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:20000, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://indexacapital.com/es/esp/yield"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Banco BiG", producto:"Cuenta Remunerada",
+    rate:1.51, rateLabel:"TAE", desc:"Banco de origen portugués operando en España, sin condiciones de nómina ni vinculación para esta remuneración base.",
+    cap:"Sin tope público", condiciones:[["Saldo máx.","Sin tope público"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"Competitiva dentro de las opciones sin condiciones, aunque Banco BiG es más conocido por sus depósitos a corto plazo que por esta cuenta.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.bancobig.es/cuentas-big/cuenta-remunerada/"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Banco Pichincha", producto:"Cuenta Remunerada",
+    rate:1.51, rateLabel:"TAE", desc:"Misma entidad que opera bajo la marca Pibank. Sin condiciones de vinculación.",
+    cap:"Sin tope público", condiciones:[["Saldo máx.","Sin tope público"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"Idéntica en fondo a la oferta de Pibank — la diferencia es solo de marca comercial, no de banco ni de garantía.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.bancopichincha.es/particulares/cuenta-ahorro"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"WiZink", producto:"Cuenta Remunerada",
+    rate:1.20, rateLabel:"TAE", desc:"Sin condiciones de vinculación ni necesidad de ser nuevo cliente para esta remuneración base.",
+    cap:"Sin tope público", condiciones:[["Saldo máx.","Sin tope público"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"Modesta frente a las opciones de cabeza, pero estable y sin trampas de fecha límite.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.wizink.es/public/productos/cuenta-ahorro"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Self Bank", producto:"Cuenta Remunerada (sin condiciones)",
+    rate:1.00, rateLabel:"TAE hasta 60k€", desc:"Tipo base sin necesidad de tener fondos ni ETFs depositados. Sube al 1,50% con esa condición (ver oferta con condiciones).",
+    cap:"Hasta 60.000€", condiciones:[["Saldo máx.","60.000€"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"El tipo base es discreto — el interés real de Self Bank está en su versión con 20.000€ en fondos, que sube al 1,50%.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:60000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.selfbank.es/ahorrar/cuenta-ahorro-self"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"EBN Banco", producto:"Cuenta Remunerada (sin condiciones)",
+    rate:1.00, rateLabel:"TAE hasta 50k€", desc:"Requiere que el saldo medio diario del trimestre supere 3.000€ — no es estrictamente \"sin condiciones\" pero no exige nómina ni vinculación de productos.",
+    cap:"Hasta 50.000€", condiciones:[["Saldo máx.","50.000€"],["Saldo medio mín.","3.000€/trimestre"],["Nómina","No"]],
+    verdict:"El requisito de saldo medio trimestral es fácil de cumplir si no mueves mucho el dinero, pero penaliza si entras y sales con frecuencia.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:50000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.ebnbanco.com/ahorro/cuenta-remunerada-ahorro/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"N26", producto:"Cuenta Remunerada (sin condiciones)",
+    rate:0.50, rateLabel:"TAE", desc:"Tipo base sin coste ni vinculación. Sube al 1,30% con el plan de pago Metal (ver oferta con condiciones).",
+    cap:"Sin tope público", condiciones:[["Saldo máx.","Sin tope público"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"Bajo en comparación directa — N26 compite más en experiencia de app que en rentabilidad del efectivo parado.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://n26.com/es-es/cuenta-ahorro"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"ING", producto:"Cuenta Naranja (sin condiciones)",
+    rate:0.30, rateLabel:"TAE", desc:"Remuneración indefinida sin condiciones, sin fecha de caducidad ni necesidad de domiciliar nada. Sube al 1,00% domiciliando nómina (ver oferta con condiciones).",
+    cap:"Sin tope", condiciones:[["Saldo máx.","Sin tope"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"Casi simbólica como rentabilidad, pero es de las pocas que no caduca ni depende de una promoción — útil como referencia de la \"banca de siempre\" sin maquillaje.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.ing.es/cuenta-naranja"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"MyInvestor", producto:"Cuenta Remunerada (sin condiciones)",
+    rate:0.30, rateLabel:"TAE hasta 70k€", desc:"Tipo base sin invertir nada. Sube hasta 2,35% según inversión mensual o contratando el plan premium (ver oferta con condiciones).",
+    cap:"Hasta 70.000€", condiciones:[["Saldo máx.","70.000€"],["Permanencia","No"],["Nómina","No"]],
+    verdict:"El tipo base es bajo a propósito: MyInvestor empuja a invertir en sus productos para subir la remuneración — sin eso, no compite.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:70000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://myinvestor.es/cuentas-tarjetas/cuentas/"
+  },
+
+  // ===================== CUENTAS REMUNERADAS — CON CONDICIONES =====================
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Revolut", producto:"Cuenta Remunerada (nuevos clientes)",
+    rate:3.51, rateLabel:"TAE", desc:"Hasta el 16/10/2026 para nuevos clientes, hasta 25.000€. Por encima de ese importe o sin ser nuevo cliente, el tipo cae a entre 1,15% y 2,27% según plan.",
+    cap:"Hasta 25.000€", condiciones:[["Saldo máx.","25.000€"],["Nuevo cliente","Sí"],["Nómina","No"]],
+    verdict:"La más agresiva en rentabilidad pura, pero caduca el 16 de octubre y solo aplica a nuevos clientes — después el tipo baja mucho según el plan.",
+    deadline:"Promo hasta 16/10/2026", top:true, sinCondicion:true,
+    montoMin:0, montoMax:25000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.revolut.com/es-ES/instant-access-savings/"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Cajamar", producto:"Cuenta Online (nuevos clientes + Bizum)",
+    rate:3.04, rateLabel:"TAE 6 meses", desc:"Hasta 50.000€ durante 6 meses para nuevos clientes con Bizum activo; después no se remunera. Compatible con su cuenta nómina.",
+    cap:"Hasta 50.000€, 6 meses", condiciones:[["Saldo máx.","50.000€"],["Duración","6 meses"],["Bizum","Requerido"]],
+    verdict:"Atractiva mientras dura, pero a los 6 meses el grifo se cierra del todo — piensa qué vas a hacer con el dinero después de esa fecha.",
+    deadline:"6 meses desde apertura", top:false, sinCondicion:false,
+    montoMin:0, montoMax:50000, plazos:["corto"], requiereNomina:false, extranjero:false,
+    url:"https://www.grupocooperativocajamar.es/es/particulares/cuentas/cuenta-online/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Trade Republic", producto:"Cuenta Remunerada (nuevos clientes)",
+    rate:3.04, rateLabel:"TAE", desc:"Sin límite de saldo remunerado. El dinero se deposita en una cuenta colectiva en un banco asociado, no en Trade Republic directamente — en caso de quiebra de Trade Republic el acceso podría complicarse algo más.",
+    cap:"Sin límite de saldo", condiciones:[["Saldo máx.","Sin límite"],["Nuevo cliente","Sí"],["Custodia","Banco asociado, no TR"]],
+    verdict:"Sin tope de saldo es una ventaja real, pero conviene entender que el dinero no está en Trade Republic sino en un tercero — la garantía de depósitos aplica igual, el proceso en caso de problema podría no ser tan directo.",
+    deadline:null, top:true, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://traderepublic.com/es-es/interes"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Bankinter", producto:"Cuenta No-Nómina (combinable)",
+    rate:5.00, rateLabel:"TAE 1er año", desc:"Hasta 10.000€ el primer año, 2,00% hasta 10.000€ el segundo. Requiere domiciliar 10 recibos al trimestre, comprar 3.000€/año con tarjeta, e ingresar 633€ los dos primeros meses.",
+    cap:"Hasta 10.000€", condiciones:[["Saldo máx.","10.000€"],["Año 2","2,00% TAE"],["Nómina","No, pero exige recibos+tarjeta"]],
+    verdict:"El 5% suena espectacular pero el tope de 10.000€ limita el beneficio real a unos 500€ brutos — y exige bastante actividad de recibos y tarjeta para mantenerlo.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:10000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.bankinter.com/banca/cuentas-tarjetas/cuentas/cuenta-no-nomina"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Openbank", producto:"Cuenta Remunerada (nuevos clientes)",
+    rate:2.50, rateLabel:"TAE 1er año", desc:"Para nuevos clientes que traigan Bizum, durante un año. Además hasta 200€ de devolución por domiciliar 2 recibos durante 10 meses (20€/mes). Tras el año, pasa al interés vigente.",
+    cap:"Sin tope público anunciado", condiciones:[["Duración","12 meses"],["Bizum","Requerido"],["Extra","Hasta 200€ por recibos"]],
+    verdict:"Buena entrada para nuevo cliente del grupo Santander, pero recuerda que pasado el año el tipo cae al \"vigente\" — revisa cuál es antes de que llegue esa fecha.",
+    deadline:"12 meses desde apertura", top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.openbank.es/cuenta-remunerada"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Bankinter", producto:"Cuenta Digital (nuevos clientes)",
+    rate:2.50, rateLabel:"TAE", desc:"Hasta 100.000€ para nuevos clientes, compatible con la opción No-Nómina del mismo banco.",
+    cap:"Hasta 100.000€", condiciones:[["Saldo máx.","100.000€"],["Nuevo cliente","Sí"],["Nómina","No"]],
+    verdict:"El tope de 100.000€ es de los más altos del comparador sin pedir nómina — buena opción si manejas un colchón grande y quieres simplicidad.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:100000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.bankinter.com/banca/cuentas-tarjetas/cuentas/abrir-cuenta-online-remunerada-sin-comisiones"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"B100", producto:"Cuenta Online (nuevos clientes, dinero nuevo)",
+    rate:2.50, rateLabel:"TAE", desc:"Hasta 100.000€ para nuevos clientes y dinero nuevo respecto al 01/06/2026.",
+    cap:"Hasta 100.000€", condiciones:[["Saldo máx.","100.000€"],["Nuevo cliente","Sí"],["Dinero nuevo","Sí, desde 01/06/26"]],
+    verdict:"Tope alto sin pedir nómina — la condición de \"dinero nuevo\" es habitual en la banca digital para evitar que muevas fondos solo para cobrar la promoción.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:100000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://b100.es/es/banco/cuentas/cuenta-online/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"B100", producto:"Cuenta Online (objetivos de actividad)",
+    rate:3.00, rateLabel:"TAE", desc:"Hasta 50.000€, pero requiere traspasar hasta 60€/día por cumplir objetivos de pasos o límite de tiempo en redes sociales, además de 8 compras al mes con tarjeta por 200€.",
+    cap:"Hasta 50.000€", condiciones:[["Saldo máx.","50.000€"],["Objetivos","Pasos o uso de redes"],["Tarjeta","8 compras/mes, 200€"]],
+    verdict:"El tipo más alto de B100, pero depende de cumplir objetivos de hábitos personales día a día — no es una rentabilidad pasiva, exige disciplina sostenida.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:50000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://b100.es/es/banco/cuentas/cuenta-online/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Cetelem", producto:"Cuenta Ahorro (nuevos clientes)",
+    rate:2.30, rateLabel:"TAE", desc:"Remuneración para nuevos clientes, sin más detalle de tope publicado en la fuente consultada.",
+    cap:"Consultar tope", condiciones:[["Nuevo cliente","Sí"],["Permanencia","No especificada"],["Nómina","No"]],
+    verdict:"Cetelem es más conocida por crédito al consumo que por ahorro — competitiva en tipo, pero conviene confirmar bien las condiciones actualizadas en su web antes de mover dinero grande.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.cetelem.es/cuenta-ahorro-cetelem"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Banco Sabadell", producto:"Cuenta Online",
+    rate:2.0, rateLabel:"TAE 1er año", desc:"Remuneración del primer año combinada con devolución del 3% en recibos de luz y gas, y 400€ adicionales si se domicilia Bizum y nómina.",
+    cap:"Hasta 50.000€", condiciones:[["Saldo máx.","50.000€"],["Bizum","Requerido"],["Nómina","Para los 400€ extra"]],
+    verdict:"La rentabilidad sola no impresiona, pero sumada al cashback de recibos y al bono de nómina puede acercarse a 1.400€ el primer año en conjunto.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:50000, plazos:["disponible","corto","medio","largo"], requiereNomina:"recomendada", extranjero:false,
+    url:"https://cuentaonline.bancsabadell.com/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Volkswagen Bank", producto:"Cuenta Remunerada (nuevos clientes)",
+    rate:2.12, rateLabel:"TAE 6 meses", desc:"Durante 6 meses para nuevos clientes; después el interés baja al 1,10%.",
+    cap:"Sin tope público", condiciones:[["Duración","6 meses"],["Nuevo cliente","Sí"],["Tras promo","1,10% TAE"]],
+    verdict:"La caída al 1,10% tras 6 meses es importante: calcula si te compensa abrir cuenta nueva solo por ese semestre de tipo más alto.",
+    deadline:"6 meses desde apertura", top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["corto"], requiereNomina:false, extranjero:false,
+    url:"https://www.vwfs.es/banca/cuenta-de-remuneracion.html"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Banca March", producto:"Cuenta Online (con nómina)",
+    rate:2.02, rateLabel:"TAE hasta 60k€", desc:"Hasta 60.000€ domiciliando nómina superior a 1.500€. Sin esa nómina, baja a 1,00% hasta 30.000€ con 10.000€ en cuenta o inversiones.",
+    cap:"Hasta 60.000€", condiciones:[["Saldo máx.","60.000€"],["Nómina mín.","1.500€"],["Sin nómina","1,00% hasta 30.000€"]],
+    verdict:"El tope de 60.000€ es de los más altos del comparador para quien domicilia nómina alta — interesante para perfiles con ingresos elevados.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:60000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://avantio.bancamarch.es/es/cuentas-y-depositos/cuenta-online/"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Globalcaja", producto:"Cuenta Online (nuevos clientes)",
+    rate:2.0, rateLabel:"TAE 1 año", desc:"Hasta 100.000€ durante un año para nuevos clientes, sin domiciliar nómina.",
+    cap:"Hasta 100.000€", condiciones:[["Saldo máx.","100.000€"],["Duración","12 meses"],["Nómina","No"]],
+    verdict:"El tope de 100.000€ sin pedir nómina es notable, pero es una entidad regional menos conocida — confirma tiempos de apertura si no tienes oficina cerca.",
+    deadline:"12 meses desde apertura", top:false, sinCondicion:true,
+    montoMin:0, montoMax:100000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.globalcaja.es/es/hazte-cliente"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"ABANCA", producto:"Cuenta Remunerada (con nómina)",
+    rate:2.0, rateLabel:"TAE 1 año", desc:"Durante un año si domicilias la nómina.",
+    cap:"Consultar tope", condiciones:[["Duración","12 meses"],["Nómina","Requerida"],["Permanencia","No especificada"]],
+    verdict:"Sencilla de entender: domicilias nómina, tienes un año de tipo alto. Confirma el tope de saldo actualizado antes de mover importes grandes.",
+    deadline:"12 meses desde apertura", top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.abanca.com/es/cuentas/cuenta-remunerada/"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Kutxabank", producto:"Cuenta Online (nuevos clientes)",
+    rate:2.0, rateLabel:"TAE 1 año", desc:"Hasta 30.000€ durante un año para nuevos clientes, sin domiciliar nómina.",
+    cap:"Hasta 30.000€", condiciones:[["Saldo máx.","30.000€"],["Duración","12 meses"],["Nómina","No"]],
+    verdict:"Entidad con fuerte presencia en País Vasco — buena opción regional sin pedir nómina, aunque el tope de 30.000€ es modesto frente a otras de la lista.",
+    deadline:"12 meses desde apertura", top:false, sinCondicion:true,
+    montoMin:0, montoMax:30000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://portal.kutxabank.es/cs/Satellite/kb/es/particulares/hazte-cliente/hazte-cliente/pys"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"EBN Banco", producto:"Cuenta Remunerada (con inversión)",
+    rate:2.50, rateLabel:"TAE 3k-10k€", desc:"2,50% entre 3.000€ y 10.000€, y 1,50% por encima de 10.000€, si se mantiene una inversión mínima de 2.500€ o 10.000€ en carteras gestionadas por EBN.",
+    cap:"Según tramo de saldo", condiciones:[["Inversión mín.","2.500€ o 10.000€"],["Tramo 3k-10k€","2,50%"],["Tramo >10k€","1,50%"]],
+    verdict:"Solo compensa si ya tenías pensado invertir con EBN — usar la inversión solo para subir el tipo de la cuenta no suele tener sentido económico.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:3000, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.ebnbanco.com/ahorro/cuenta-remunerada-ahorro/"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Bankinter", producto:"Cuenta Digital (con nómina y Bizum)",
+    rate:2.0, rateLabel:"TAE 1 año", desc:"Hasta 50.000€ durante un año para nuevos clientes que domicilien nómina y Bizum. Sin esos dos requisitos, el tipo baja a 1,62%. El dinero que exceda 5.000€ se traspasa automáticamente a una cuenta corriente al 0%, aunque se puede retirar después.",
+    cap:"Hasta 50.000€", condiciones:[["Saldo máx.","50.000€"],["Nómina + Bizum","Requeridos"],["Sin ambos","1,62% TAE"]],
+    verdict:"El traspaso automático del exceso de 5.000€ a una cuenta sin remunerar es la letra pequeña que hay que vigilar — revisa el saldo con frecuencia o perderás rentabilidad sin darte cuenta.",
+    deadline:"12 meses desde apertura", top:false, sinCondicion:false,
+    montoMin:0, montoMax:50000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.bankinter.com/banca/cuentas-tarjetas/cuentas"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"MyInvestor", producto:"Cuenta Remunerada (plan premium o inversión)",
+    rate:2.35, rateLabel:"TAE hasta 70k€", desc:"2,35% con el plan premium (7,99€/mes). Sin plan: 1,00% invirtiendo 300€, 1,50% invirtiendo más de 600€/mes, o 2,00% invirtiendo más de 900€/mes en productos seleccionados.",
+    cap:"Hasta 70.000€", condiciones:[["Plan premium","7,99€/mes → 2,35%"],["Sin plan","Según inversión mensual"],["Saldo máx.","70.000€"]],
+    verdict:"Tiene sentido solo si ya planeabas invertir con MyInvestor — pagar 7,99€/mes solo por la remuneración de la cuenta rara vez compensa frente a otras opciones gratuitas del comparador.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:70000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://myinvestor.es/cuentas-tarjetas/cuentas/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Self Bank", producto:"Cuenta Remunerada (con fondos/ETFs)",
+    rate:1.50, rateLabel:"TAE hasta 60k€", desc:"Sube del 1,00% al 1,50% si mantienes 20.000€ o más en fondos y/o ETFs depositados en Self Bank.",
+    cap:"Hasta 60.000€", condiciones:[["Fondos/ETFs mín.","20.000€"],["Saldo máx.","60.000€"],["Sin esa inversión","1,00%"]],
+    verdict:"El requisito de 20.000€ en fondos es alto — solo merece la pena si ya tenías esa cartera planeada, no como truco solo para subir 0,50 puntos la cuenta.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:60000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.selfbank.es/ahorrar/cuenta-ahorro-self"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"Unicaja", producto:"Cuenta Online (con nómina)",
+    rate:1.25, rateLabel:"TAE hasta 20k€", desc:"Hasta 20.000€, combinada con hasta 450€ por domiciliar nómina y 1% de devolución en recibos hasta 200€/año.",
+    cap:"Hasta 20.000€", condiciones:[["Saldo máx.","20.000€"],["Nómina","Para bonificación extra"],["Recibos","1% devolución, hasta 200€/año"]],
+    verdict:"La rentabilidad sola es modesta — el valor real está en sumarla a la bonificación de nómina, que aparece también como oferta propia en la categoría correspondiente.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:20000, plazos:["disponible","corto","medio","largo"], requiereNomina:"recomendada", extranjero:false,
+    url:"https://www.unicajabanco.es/es/cuenta-online"
+  },
+  {
+    cat:"remunerada", tipo:"tradicional", entidad:"ING", producto:"Cuenta Naranja (con nómina)",
+    rate:1.0, rateLabel:"TAE", desc:"Domiciliando nómina o ingresos recurrentes. También se ofrece un 1,00% durante el primer año para nuevos clientes sin ese requisito.",
+    cap:"Sin tope", condiciones:[["Nómina","O ingresos recurrentes"],["Alternativa","1 año nuevos clientes"],["Permanencia","No"]],
+    verdict:"El salto desde el 0,30% base no es enorme, pero al menos no exige más que domiciliar ingresos — sin letra pequeña adicional.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.ing.es/cuenta-naranja"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"N26", producto:"Cuenta Remunerada (plan Metal)",
+    rate:1.30, rateLabel:"TAE", desc:"Sube del 0,50% al 1,30% contratando el plan de pago Metal, con coste de 16,90€/mes (o equivalentes semestral/anual).",
+    cap:"Sin tope público", condiciones:[["Plan Metal","16,90€/mes"],["Alternativa anual","162,20€/año"],["Sin plan","0,50%"]],
+    verdict:"Haz cuentas antes de pagar 16,90€/mes solo por la rentabilidad: necesitas un saldo bastante alto para que el extra de interés compense la cuota.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://n26.com/es-es/cuenta-ahorro"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Cetelem", producto:"Cuenta Remunerada Suma (cashback)",
+    rate:1.5, rateLabel:"% cashback compras", isMoney:false, desc:"Devolución del 1,5% de las compras con tarjeta, hasta 10€/mes. Requiere saldo medio mensual superior a 600€ y al menos 20€ de compra en supermercado o gasolineras al mes.",
+    cap:"Hasta 10€/mes de devolución", condiciones:[["Saldo medio mín.","600€/mes"],["Compra mín.","20€/mes súper o gasolinera"],["Tope devolución","10€/mes"]],
+    verdict:"Es cashback, no TAE — el tope de 10€/mes limita mucho el beneficio total anual, encaja mejor como complemento que como producto principal de ahorro.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.cetelem.es/cuenta-remunerada-suma"
+  },
+
+  // ===================== DEPÓSITOS — SIN CONDICIONES =====================
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Banco Finantia", producto:"Depósito no cancelable 36 meses",
+    rate:3.00, rateLabel:"TAE", desc:"Sin condiciones de vinculación. También disponible a 12 y 18 meses al 3,00% y 24 meses al 3,00% (todos no cancelables). Versión cancelable al 2,70% a 36 meses.",
+    cap:"Desde 50.000€", condiciones:[["Plazo","36 meses"],["Mínimo","50.000€"],["Cancelable","No"]],
+    verdict:"El mínimo de 50.000€ es el más alto del comparador — solo tiene sentido para patrimonios grandes que pueden inmovilizar esa cantidad sin tocarla.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:50000, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.finantia.es/es/banca-personal/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Renault Bank", producto:"Depósito 3 años",
+    rate:3.19, rateLabel:"TAE", desc:"Depósito a 3 años, sin comisiones ni vinculaciones, mínimo de entrada bajo.",
+    cap:"Desde 500€", condiciones:[["Plazo","36 meses"],["Mínimo","500€"],["Nómina","No"]],
+    verdict:"Mínimo de entrada de solo 500€ lo hace accesible para quien quiere probar un banco europeo sin comprometer mucho capital.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:500, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://renaultbank.es/productos/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"EBN Banco", producto:"Depósito 48 meses",
+    rate:3.00, rateLabel:"TAE", desc:"El plazo más largo de su gama (3, 6, 12, 18, 24, 36, 42 y 48 meses), con el tipo más alto en el extremo de 48 meses.",
+    cap:"Desde 5.000€", condiciones:[["Plazo","48 meses"],["Mínimo","5.000€"],["Nómina","No"]],
+    verdict:"EBN ofrece toda una escalera de plazos — si 4 años te parece mucho, su versión a 12 o 24 meses (2,60-2,70%) es casi igual de competitiva con mucho menos compromiso de tiempo.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:5000, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.ebnbanco.com/ahorro/deposito-sinycon-plus/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Banco BiG", producto:"Depósito no cancelable 12 meses",
+    rate:2.50, rateLabel:"TAE", desc:"Versión no cancelable a 12 meses, mínimo 10.000€. También disponible la versión cancelable al mismo tipo desde solo 1.000€.",
+    cap:"Desde 10.000€", condiciones:[["Plazo","12 meses"],["Mínimo","10.000€"],["Cancelable","No"]],
+    verdict:"Mismo tipo que la versión cancelable desde 1.000€ — no hay razón para elegir la no cancelable salvo que ya tengas claro que no vas a necesitar el dinero antes.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:10000, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.bancobig.es/ahorrar/depositos-a-plazo-fijo/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Cetelem", producto:"Depósito 24 meses",
+    rate:3.00, rateLabel:"TAE", desc:"El tipo más alto de su gama (también ofrecen 3, 6 y 12 meses), con mínimo de entrada muy bajo.",
+    cap:"Desde 1€", condiciones:[["Plazo","24 meses"],["Mínimo","1€"],["Nómina","No"]],
+    verdict:"El mínimo de entrada de prácticamente 0€ es único en este comparador — perfecto para probar la entidad sin comprometer capital relevante.",
+    deadline:null, top:true, sinCondicion:true,
+    montoMin:1, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.cetelem.es/ahorro-y-depositos-cetelem/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Pibank", producto:"Depósito cancelable 12 meses",
+    rate:2.37, rateLabel:"TAE", desc:"Sin importe mínimo de entrada.",
+    cap:"Sin mínimo", condiciones:[["Plazo","12 meses"],["Mínimo","Sin mínimo"],["Cancelable","Sí"]],
+    verdict:"Sin mínimo de entrada es una rareza en depósitos — accesible para cualquier importe, aunque el tipo no es el más alto del mercado.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.pibank.es/deposito-bancario-plazo-fijo/"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Cajamar", producto:"Depósito Hola 12 meses",
+    rate:2.27, rateLabel:"TAE", desc:"Depósito cancelable sin condiciones de nómina ni vinculación.",
+    cap:"Desde 6.000€", condiciones:[["Plazo","12 meses"],["Mínimo","6.000€"],["Cancelable","Sí"]],
+    verdict:"Notablemente más bajo que su versión con nómina (2,78%) — compara bien ambas si ya tienes pensado domiciliar la pensión o nómina en Cajamar.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:6000, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.cajamar.es/es/particulares/ahorro/deposito-hola/"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Deutsche Bank", producto:"Depósito Confianza 12 meses (base)",
+    rate:2.25, rateLabel:"TAE", desc:"Tipo base sin condiciones adicionales. Sube hasta 3,25% combinando nómina, tarjeta y fondo de inversión (ver oferta con condiciones).",
+    cap:"Hasta 100.000€", condiciones:[["Plazo","12 meses"],["Mínimo","3.000€"],["Máximo","100.000€"]],
+    verdict:"El tipo base ya es competitivo sin nada más — la versión con condiciones solo merece la pena si ya tenías pensado mover nómina, tarjeta y fondos a Deutsche Bank.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:3000, montoMax:100000, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.deutsche-bank.es/es/soluciones/depositoconfianza"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Banco Pichincha", producto:"Depósito cancelable 12 meses",
+    rate:2.02, rateLabel:"TAE", desc:"Sin condiciones de vinculación adicionales.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","12 meses"],["Cancelable","Sí"],["Nómina","No"]],
+    verdict:"Misma entidad que Pibank — competitivo dentro de las opciones sin condiciones a 12 meses, aunque no destaca frente a Renault Bank o EBN al mismo plazo.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.bancopichincha.es/particulares/deposito-pichincha"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"WiZink", producto:"Depósito cancelable 25 meses",
+    rate:2.10, rateLabel:"TAE", desc:"También disponible a 12 meses al 2,05%, ambos sin condiciones de vinculación.",
+    cap:"Desde 5.000€", condiciones:[["Plazo","25 meses"],["Mínimo","5.000€"],["Cancelable","Sí"]],
+    verdict:"Notablemente por debajo de su oferta para dinero nuevo a 18 meses (2,85%) — revisa esa otra opción si encajas en el perfil de \"dinero nuevo\".",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:5000, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.wizink.es/public/productos/deposito-plazo-fijo"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"ING", producto:"Depósito Naranja 24 meses",
+    rate:2.30, rateLabel:"TAE >100k€", desc:"2,15% por debajo de 50.000€, 2,25% entre 50.000€ y 100.000€, y 2,30% por encima de 100.000€, a 24 meses. También disponible a 12 y 18 meses con la misma estructura por tramos.",
+    cap:"Tipo sube con el importe", condiciones:[["Plazo","24 meses"],["<50k€","2,15%"],[">100k€","2,30%"]],
+    verdict:"El tipo escalonado por importe es poco habitual — cuanto más dinero metas, mejor tipo consigues, al revés de lo que pasa con los topes de muchas cuentas remuneradas.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.ing.es/depositos-naranja"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"MyInvestor", producto:"Depósito cancelable 1 mes",
+    rate:2.05, rateLabel:"TAE", desc:"El más alto de su gama de plazos cortos (también 3, 6 y 12 meses al 1,75%). MyInvestor sube estos tipos con condiciones (ver oferta con condiciones).",
+    cap:"Desde 10.000€", condiciones:[["Plazo","1 mes"],["Mínimo","10.000€"],["Cancelable","Sí"]],
+    verdict:"Para plazos tan cortos como 1 mes, este tipo es de los más altos del comparador — útil si necesitas el dinero pronto pero no quieres dejarlo sin remunerar.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:10000, montoMax:999999999, plazos:["corto"], requiereNomina:false, extranjero:false,
+    url:"https://myinvestor.es/cuentas-tarjetas/depositos/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Self Bank", producto:"Depósito cancelable 12 meses",
+    rate:2.00, rateLabel:"TAE", desc:"Mínimo de entrada bajo, máximo elevado, sin condiciones de vinculación.",
+    cap:"1.000€ – 1.000.000€", condiciones:[["Plazo","12 meses"],["Mínimo","1.000€"],["Máximo","1.000.000€"]],
+    verdict:"El rango de importe admitido es de los más amplios del comparador, desde ahorro modesto hasta patrimonios grandes, todo al mismo tipo.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:1000, montoMax:1000000, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.selfbank.es/ahorrar/depositos"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"CBNK", producto:"Depósito variable (Euribor 12M)",
+    rate:1.85, rateLabel:"TAE aprox.", desc:"Referenciado a Euribor 12M menos 0,75 puntos — el tipo varía con el mercado en vez de ser fijo. CBNK ofrece otra versión con nómina más alta (ver oferta con condiciones).",
+    cap:"Desde 20.000€", condiciones:[["Plazo","Variable"],["Mínimo","20.000€"],["Referenciado a","Euribor 12M - 0,75%"]],
+    verdict:"Al ser variable, el tipo sube o baja con el Euribor — interesante si crees que los tipos van a subir, arriesgado si crees lo contrario.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:20000, montoMax:999999999, plazos:["medio","largo"], requiereNomina:false, extranjero:false,
+    url:"https://cbnk.es/personas/depositos/deposito-variable"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Openbank", producto:"Depósito cancelable 12 meses (base)",
+    rate:1.25, rateLabel:"TAE", desc:"Tipo base sin condiciones. Sube a 2,25% con ingresos mensuales de 900€/mes (ver oferta con condiciones).",
+    cap:"Consultar mínimo", condiciones:[["Plazo","12 meses"],["Cancelable","Sí"],["Ingresos","No requeridos"]],
+    verdict:"El salto de 1,00 puntos por domiciliar 900€/mes en ingresos es considerable — revisa si te compensa frente a la versión sin condiciones.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.openbank.es/deposito-a-plazo-fijo"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"CaixaBank", producto:"Depósito cancelable (base)",
+    rate:0.10, rateLabel:"TAE", desc:"Tipo base testimonial. Sube hasta 1,10% contratando productos y/o servicios adicionales (ver oferta con condiciones).",
+    cap:"Desde 5.000€", condiciones:[["Mínimo","5.000€"],["Cancelable","Sí"],["Vinculación","No"]],
+    verdict:"Prácticamente simbólico sin vincular productos — de largo el peor tipo del comparador en depósitos sin condiciones.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:5000, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.caixabank.es/particular/depositos/depositoPlazoFijo-NA"
+  },
+
+  // ===================== DEPÓSITOS — CON CONDICIONES =====================
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Deutsche Bank", producto:"Depósito Confianza 12 meses (máximo)",
+    rate:3.25, rateLabel:"TAE máx.", desc:"El tipo base es 2,25%; sube 0,20 puntos por domiciliar nómina (mín. 2.000€), 0,20 por tarjeta de crédito con 6.000€/año de gasto, y 0,60 por contratar 15.000€ en un fondo de inversión de DB.",
+    cap:"10.000€ – 100.000€", condiciones:[["Plazo","12 meses"],["Nómina mín.","2.000€"],["TAE base","2,25%"]],
+    verdict:"El 3,25% exige nómina + tarjeta + fondo de 15.000€ simultáneamente — sin esas tres piezas a la vez, te quedas en el 2,25% base, que ya es bueno por sí solo.",
+    deadline:null, top:true, sinCondicion:false,
+    montoMin:10000, montoMax:100000, plazos:["medio"], requiereNomina:"recomendada", extranjero:false,
+    url:"https://www.deutsche-bank.es/es/soluciones/depositoconfianza"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Banco BiG", producto:"Depósito nuevos clientes 1 mes",
+    rate:4.00, rateLabel:"TAE", desc:"El tipo más alto del comparador para nuevos clientes, pero a solo 1 mes de plazo. También ofrecen 3,25% a 3 meses y 2,75% a 6 meses en la misma promoción.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","1 mes"],["Nuevo cliente","Sí"],["Alternativas","3,25% a 3M, 2,75% a 6M"]],
+    verdict:"Un 4% suena espectacular pero solo dura 1 mes — el rendimiento absoluto en euros es modesto; útil más como gancho promocional que como estrategia de ahorro real.",
+    deadline:null, top:true, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["corto"], requiereNomina:false, extranjero:false,
+    url:"https://www.bancobig.es/ahorrar/depositos-a-plazo-fijo/"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"ING", producto:"Depósito Naranja 3 meses (nuevos clientes)",
+    rate:3.00, rateLabel:"TAE", desc:"Exclusivo para nuevos clientes, a corto plazo de solo 3 meses.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","3 meses"],["Nuevo cliente","Sí"],["Nómina","No"]],
+    verdict:"Buen tipo para un plazo tan corto, ideal si quieres \"aparcar\" dinero un trimestre sin comprometerte a más.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["corto"], requiereNomina:false, extranjero:false,
+    url:"https://www.ing.es/cuenta-naranja"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Self Bank", producto:"Depósito nuevos clientes 12 meses",
+    rate:2.75, rateLabel:"TAE", desc:"Desde 6.000€ hasta 100.000€, exclusivo para nuevos clientes.",
+    cap:"6.000€ – 100.000€", condiciones:[["Plazo","12 meses"],["Nuevo cliente","Sí"],["Mínimo","6.000€"]],
+    verdict:"Notable subida frente a su versión sin condiciones (2,00%) — si vas a abrir cuenta nueva en Self Bank, esta versión es claramente mejor.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:6000, montoMax:100000, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.selfbank.es/ahorrar/depositos-nuevos-clientes"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"WiZink", producto:"Depósito dinero nuevo 18 meses",
+    rate:2.85, rateLabel:"TAE", desc:"Para dinero nuevo, mínimo 5.000€. También disponible a 36 meses al 2,60% en las mismas condiciones.",
+    cap:"Desde 5.000€", condiciones:[["Plazo","18 meses"],["Mínimo","5.000€"],["Dinero nuevo","Requerido"]],
+    verdict:"Notablemente mejor que su versión sin condiciones a plazos similares — la condición de \"dinero nuevo\" es habitual y fácil de cumplir si vienes de fuera del banco.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:5000, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.wizink.es/public/productos/deposito-plazo-fijo"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Cajamar", producto:"Depósito nueva pensión 12 meses",
+    rate:2.78, rateLabel:"TAE", desc:"Para clientes nuevos que domicilien la pensión, entre 6.000€ y 50.000€.",
+    cap:"6.000€ – 50.000€", condiciones:[["Plazo","12 meses"],["Pensión","Domiciliada"],["Rango","6.000€-50.000€"]],
+    verdict:"Pensado específicamente para pensionistas que cambian de banco — claramente mejor que la versión general de Cajamar (2,27%) si encajas en ese perfil.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:6000, montoMax:50000, plazos:["medio"], requiereNomina:true, extranjero:false,
+    url:"https://www.cajamar.es/es/particulares/ahorro/deposito-nueva-pension/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"CBNK", producto:"Depósito con nómina 12 meses",
+    rate:2.50, rateLabel:"TAE", desc:"Domiciliando nómina superior a 2.000€ o teniendo 10.000€ en fondos de pensiones, mínimo 10.000€ de depósito.",
+    cap:"Desde 10.000€", condiciones:[["Plazo","12 meses"],["Nómina mín.","2.000€"],["Alternativa","10.000€ en fondos de pensiones"]],
+    verdict:"Mejor que su versión variable referenciada al Euribor si tienes nómina alta para domiciliar — fija el tipo en vez de depender del mercado.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:10000, montoMax:999999999, plazos:["medio"], requiereNomina:true, extranjero:false,
+    url:"https://cbnk.es/salud/depositos/deposito-nomina"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Arquia", producto:"Depósito nuevos clientes 18 meses",
+    rate:2.50, rateLabel:"TAE", desc:"Para dinero nuevo, hasta 200.000€. Requiere cumplir una de tres condiciones: nómina/autónomo domiciliada, fondo de inversión o plan de pensiones de 10.000€+, o seguro de salud HNA mediado por Arquia.",
+    cap:"Hasta 200.000€", condiciones:[["Plazo","18 meses"],["Mínimo","10.000€"],["Una de 3 condiciones","Nómina, fondo o seguro"]],
+    verdict:"Las tres vías alternativas de entrada (nómina, fondo, o seguro) le dan flexibilidad real frente a depósitos que solo aceptan nómina como condición única.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:10000, montoMax:200000, plazos:["largo"], requiereNomina:"recomendada", extranjero:false,
+    url:"https://www.arquia.com/particulares/depositos"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"Banca March", producto:"Depósito nuevos clientes 12 meses",
+    rate:2.50, rateLabel:"TAE", desc:"Mínimo de entrada elevado, exclusivo para nuevos clientes.",
+    cap:"Desde 30.000€", condiciones:[["Plazo","12 meses"],["Mínimo","30.000€"],["Nuevo cliente","Sí"]],
+    verdict:"El mínimo de 30.000€ la reserva para patrimonios medios-altos — no es una opción para ahorro modesto.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:30000, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://avantio.bancamarch.es/es/cuentas-y-depositos/deposito-6-meses/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"MyInvestor", producto:"Depósito con inversión en robo advisor",
+    rate:2.25, rateLabel:"TAE 1 mes", desc:"2,25% a 1 mes, 2,00% a 3, 6 y 12 meses, invirtiendo 150€ en su robo advisor (4.000€ para el de 1 mes). Sin eso, baja a 2,10%/1,75%. Con plan premium: 4,00% a 1 mes (hasta 5.000€) o 3,00% a 3 meses (hasta 25.000€).",
+    cap:"Desde 10.000€", condiciones:[["Inversión mín.","150€ en robo advisor"],["Mínimo depósito","10.000€"],["Plan premium","Mejora aún más el tipo"]],
+    verdict:"La estructura por capas (base, con inversión mínima, con plan premium) es de las más complejas del comparador — confirma exactamente qué tramo te aplica antes de contratar.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:10000, montoMax:999999999, plazos:["corto","medio"], requiereNomina:false, extranjero:false,
+    url:"https://myinvestor.es/cuentas-tarjetas/depositos/"
+  },
+  {
+    cat:"deposito", tipo:"tradicional", entidad:"CaixaBank", producto:"Depósito con productos vinculados",
+    rate:1.10, rateLabel:"TAE", desc:"Contratando determinados productos y/o servicios adicionales de CaixaBank.",
+    cap:"Desde 5.000€", condiciones:[["Mínimo","5.000€"],["Vinculación","Productos adicionales"],["Sin vincular","0,10%"]],
+    verdict:"Incluso con vinculación de productos, el tipo sigue siendo de los más bajos del comparador — CaixaBank no compite en rentabilidad de depósitos frente a la banca digital.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:5000, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
+    url:"https://www.caixabank.es/particular/depositos/depositoPlazoFijo-NA"
+  },
+
+  // ===================== CUENTAS CON BONIFICACIÓN POR NÓMINA =====================
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"BBVA", producto:"Cuenta Online",
+    rate:1060, rateLabel:"€ bonif. máx.", isMoney:true, desc:"400€ por domiciliar nómina (mín. 800€) + 120€ por recibos + 120€ por tarjeta + 120€ por Bizum + 300€ por mantener 20.000€ de saldo medio. Todo en pagos mensuales fraccionados.",
+    cap:"33,33€/mes nómina + extras", condiciones:[["Nómina mín.","800€"],["Permanencia","No especificada"],["Pago","Mensual fraccionado"]],
+    verdict:"El banco que más dinero regala ahora mismo, pero llega por tramos según uso real de la cuenta — no es un ingreso único el primer día.",
+    deadline:null, top:true, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.bbva.es/personas/productos/cuentas/cuenta-nomina.html"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Banco Sabadell", producto:"Cuenta Online",
+    rate:1400, rateLabel:"€ total 1er año", isMoney:true, desc:"400€ por domiciliar nómina y Bizum, hasta 1.000€ de rentabilidad al 2% TAE sobre 50.000€, y 3% de devolución en recibos de luz y gas.",
+    cap:"Suma de 3 conceptos", condiciones:[["Nómina mín.","1.000€"],["Permanencia","12 meses"],["Tipo","Combinado"]],
+    verdict:"El titular de 1.400€ es real, pero es la suma de tres beneficios distintos, no un bono directo — solo lo alcanzas si mantienes saldo alto y usas la cuenta a fondo.",
+    deadline:null, top:true, sinCondicion:false,
+    montoMin:0, montoMax:50000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://cuentaonline.bancsabadell.com/"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Deutsche Bank", producto:"Cuenta Nómina Más DB",
+    rate:2684, rateLabel:"€ total 1er año aprox.", isMoney:true, desc:"500€ brutos (405€ netos) + 1,50% TAE para saldos entre 10.000€ y 150.000€ durante el primer año. Requiere domiciliar nómina mín. 2.000€/mes durante 12 meses y mantener saldo medio de 3.000€.",
+    cap:"444,44€ bono + hasta 2.240€ TAE", condiciones:[["Nómina mín.","2.000€/mes"],["Saldo medio mín.","3.000€"],["Duración","12 meses"]],
+    verdict:"El total combinado es de los más altos del comparador, pero exige una nómina relativamente alta (2.000€) sostenida todo el año — no es para cualquier perfil.",
+    deadline:null, top:true, sinCondicion:false,
+    montoMin:0, montoMax:150000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.deutsche-bank.es/es/particulares/cuentas/mas-db.html"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Ibercaja", producto:"Cuenta Vamos",
+    rate:840, rateLabel:"€ en 2 años", isMoney:true, desc:"5,09% hasta 12.000€ el primer año (hasta 600€) y 2,01% hasta 12.000€ el segundo año (hasta 240€). Requiere ser nuevo cliente, domiciliar nómina mín. 600€/mes, 6 recibos al semestre y 6 movimientos con tarjeta.",
+    cap:"Hasta 12.000€", condiciones:[["Saldo máx.","12.000€"],["Nómina mín.","600€/mes"],["Recibos","6 al semestre"]],
+    verdict:"El tipo del primer año es altísimo, pero limitado a 12.000€ — el beneficio real en euros (600€) está bien pero no es tan dramático como el porcentaje sugiere.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:12000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.ibercaja.es/particulares/cuenta-vamos/"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Cajamar", producto:"Cuenta Wefferent",
+    rate:750, rateLabel:"€ bonif. máx.", isMoney:true, desc:"Bonificación por tramos según importe de nómina: 300€, 500€ o 750€ según si la nómina supera 1.200€, 2.000€ o 4.000€. Permanencia de 36 meses.",
+    cap:"607,5€ netos aprox.", condiciones:[["Nómina mín.","1.200€"],["Permanencia","36 meses"],["Primera vez","Nómina nueva en el banco"]],
+    verdict:"Solo llegas a los 750€ si tu nómina supera los 4.000€ — para nóminas medias el regalo real está más cerca de los 300-500€.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.cajamar.es/es/comun/eventos/promo-nominas/"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Kutxabank", producto:"Cuenta Online",
+    rate:600, rateLabel:"€ bonif. máx.", isMoney:true, desc:"600€ para nóminas de 2.500€/mes o más (1.800€ si tienes 30 años o menos), o 300€ para nóminas desde 800€/mes. Requiere Bizum activo y saldo mínimo de 250€. Permanencia 36 meses (12 si eres joven con el bono de 300€).",
+    cap:"Según importe de nómina", condiciones:[["Nómina mín.","800€"],["Saldo mín.","250€"],["Permanencia","36 meses (12 jóvenes)"]],
+    verdict:"El trato especial para menores de 30 años (permanencia de solo 12 meses) es poco habitual — si encajas en ese perfil, el compromiso real es mucho menor.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://portal.kutxabank.es/cs/Satellite/kb/es/particulares/hazte-cliente/hazte-cliente/pys"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"ABANCA", producto:"Cuenta Clara",
+    rate:500, rateLabel:"€ bonif. máx.", isMoney:true, desc:"500€ para nóminas desde 1.200€/mes, o 185€ para nóminas entre 800€ y 1.200€/mes. Exclusivo para nuevos clientes.",
+    cap:"405€ netos aprox.", condiciones:[["Nómina mín.","800€"],["Permanencia","24 meses"],["Nuevo cliente","Sí"]],
+    verdict:"De las bonificaciones más simples de cobrar: sin tramos complejos, solo dos escalones según importe de nómina.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.abanca.com/es/cuentas/trae-tu-nomina-500/"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Globalcaja", producto:"Cuenta Online",
+    rate:500, rateLabel:"€ bonif. máx.", isMoney:true, desc:"380€ para nóminas de 2.000€/mes o más, o 180€ para nóminas entre 700€ y 1.999€/mes, más 120€ adicionales activando Bizum y usándolo al menos una vez al mes.",
+    cap:"500€ o 300€ según nómina", condiciones:[["Nómina mín.","700€"],["Permanencia","12 meses"],["Bizum","1 operación/mes para 120€ extra"]],
+    verdict:"La permanencia de solo 12 meses es de las más cortas del comparador en bonificaciones de nómina — menos compromiso que la mayoría de alternativas similares.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.globalcaja.es/particulares/nominas"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Unicaja", producto:"Cuenta Online (opción combinada)",
+    rate:900, rateLabel:"€ + extras aprox.", isMoney:true, desc:"450€ o 350€ por domiciliar nómina (según si supera 1.200€) + 1,25% TAE hasta 25.000€ + hasta 200€/año de devolución en recibos. Solo para nuevos clientes sin productos previos en Unicaja.",
+    cap:"450€ bono + hasta 250€ TAE + 200€ recibos", condiciones:[["Nómina mín.","600€"],["Permanencia","24 meses"],["Nuevo cliente","Sí"]],
+    verdict:"La versión combinada suma más que la alternativa simple de Unicaja (ver Cuenta Real Madrid) — pero confirma que cumples el requisito de \"nuevo cliente sin productos previos\", que descarta a mucha gente.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:25000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.unicajabanco.es/es/cuenta-online"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Bankinter", producto:"Cuenta Nómina",
+    rate:683, rateLabel:"€ total 2 años", isMoney:true, desc:"5,00% hasta 10.000€ el primer año (hasta 487€) + 2,00% hasta 10.000€ el segundo año (hasta 196€). Requiere nómina mín. 800€/mes, 3 recibos al trimestre y 3 movimientos con tarjeta (no necesario con pensión).",
+    cap:"Hasta 10.000€", condiciones:[["Nómina mín.","800€/mes"],["Saldo máx.","10.000€"],["Recibos","3/trimestre"]],
+    verdict:"El tope de 10.000€ limita el beneficio real frente al porcentaje llamativo — calcula en euros, no en TAE, para comparar de forma justa.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:10000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.bankinter.com/banca/nav/cuenta-nomina"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Santander", producto:"Cuenta Online (opción efectivo)",
+    rate:840, rateLabel:"€ en 2 años", isMoney:true, desc:"Hasta 180€/año por domiciliar nómina + hasta 120€/año por Bizum + hasta 120€/año por domiciliar 2 recibos, durante 2 años. Requiere no tener nómina domiciliada previamente y nómina mínima de 800€/mes.",
+    cap:"Repartido en 24 meses", condiciones:[["Nómina mín.","800€/mes"],["Permanencia","24 meses"],["Bizum","3 operaciones/mes"]],
+    verdict:"Repartir el incentivo en dos años reduce el atractivo frente a quien paga de golpe — calcula el valor presente, no solo la cifra final.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.bancosantander.es/particulares/cuentas-bancarias/cuentas-nomina"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Santander", producto:"Cuenta Online (opción iPhone)",
+    rate:0, rateLabel:"Renting iPhone 17 Pro, 36 meses", isMoney:false, desc:"En vez de efectivo, renting de un iPhone 17 Pro (u otro modelo) durante 36 meses. Requiere nómina superior a 3.000€/mes para el iPhone 17 Pro (entre 1.200€ y 3.000€ da derecho al iPhone 17 normal). No haber domiciliado nómina antes desde enero de 2025.",
+    cap:"iPhone 17 Pro o 17 según nómina", condiciones:[["Nómina mín.","1.200€ (17), 3.000€ (17 Pro)"],["Permanencia","36 meses"],["Recibos","2/mes"]],
+    verdict:"Una alternativa curiosa al efectivo, pero exige nómina alta para el modelo Pro y te ata 3 años — al terminar puedes quedarte el móvil pagando una cantidad simbólica.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.bancosantander.es/particulares/hazte-cliente"
+  },
+  {
+    cat:"nomina", tipo:"neobanco", entidad:"imagin", producto:"Cuenta Nómina",
+    rate:308.64, rateLabel:"€ bonif. máx.", isMoney:true, desc:"308,64€ para nóminas de 1.500€/mes o más, o 185,19€ para nóminas entre 900€ y 1.500€/mes. Permanencia de 48 meses, la más larga del comparador.",
+    cap:"Según importe de nómina", condiciones:[["Nómina mín.","900€"],["Permanencia","48 meses"],["Primera vez","Nómina nueva"]],
+    verdict:"4 años de permanencia es la condición más larga de todo este comparador — el regalo en euros no compensa especialmente ese nivel de compromiso frente a alternativas con permanencias más cortas.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.imagin.com/cuentas/domiciliar-nomina"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"CaixaBank", producto:"Cuenta Online",
+    rate:308.64, rateLabel:"€ o TV/móvil Samsung", isMoney:true, desc:"De 185,19€ a 308,64€ en efectivo, o alternativamente TV/smartphone Samsung o cupón Facilitea de 200€ a 400€, según importe de nómina (desde 900€ hasta 2.500€+/mes). Permanencia de 24+24 meses.",
+    cap:"Según importe de nómina", condiciones:[["Nómina mín.","900€"],["Permanencia","24+24 meses"],["Alternativa","TV/móvil Samsung"]],
+    verdict:"La permanencia real es de 4 años (24+24), una de las más largas del comparador — el efectivo es bajo comparado con BBVA o Sabadell, aunque la opción de móvil/TV puede compensar si ya tenías pensado ese gasto.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.caixabank.es/particular/domiciliar-nomina.html"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Cajaviva Caja Rural", producto:"Cuenta Nómina",
+    rate:400, rateLabel:"€ bonif.", isMoney:true, desc:"400€ por domiciliar nómina de mínimo 1.400€, cumpliendo además una de varias condiciones de actividad (compras con tarjeta, operaciones de Bizum, recibos domiciliados, o uso de Ruralvía Bróker). Permanencia de 36 meses.",
+    cap:"400€ netos", condiciones:[["Nómina mín.","1.400€"],["Permanencia","36 meses"],["Actividad","Una de varias condiciones"]],
+    verdict:"El requisito de nómina mínima de 1.400€ es más alto que en muchas otras entidades — descarta a quien tiene ingresos más modestos.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.cajaviva.es/particulares/promo-nomina-pension"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"ING", producto:"Cuenta Nómina ING",
+    rate:400, rateLabel:"€ bonif.", isMoney:true, desc:"400€ por domiciliar nómina o ingreso recurrente de mínimo 700€/mes, exclusivo para quien nunca ha sido cliente de ING. Requiere traer Bizum antes del 31/07/2026.",
+    cap:"400€ netos", condiciones:[["Nómina mín.","700€"],["Permanencia","No especificada"],["Plazo Bizum","Antes del 31/07/2026"]],
+    verdict:"De las condiciones más simples de cumplir: solo nómina y Bizum, sin tramos complicados ni permanencias largas anunciadas.",
+    deadline:"Bizum antes del 31/07/2026", top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.ing.es/cuenta-nomina-ing"
+  },
+  {
+    cat:"nomina", tipo:"tradicional", entidad:"Openbank", producto:"Trae tu nómina",
+    rate:360, rateLabel:"€ bonif. + recibos", isMoney:true, desc:"360€ por domiciliar nómina, pensión o prestación por desempleo de mínimo 900€, más devolución del 0,5% en recibos de luz, gas, teléfono, móvil e internet. Combinable con otras promociones de Openbank.",
+    cap:"360€ + 0,5% recibos", condiciones:[["Nómina mín.","900€"],["Permanencia","No especificada"],["Combinable","Sí, con otras promos"]],
+    verdict:"Que sea combinable con la cuenta de ahorro o depósitos para nuevos clientes del mismo banco le da más valor real del que parece a simple vista — revisa si puedes acumular varias promociones.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.openbank.es/cuenta-nomina"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Pibank", producto:"Cuenta Nómina (con nómina)",
+    rate:2.27, rateLabel:"TAE por encima de 5k€", desc:"0,00% para los primeros 5.000€ y 2,27% para lo que exceda esa cifra. Requiere domiciliar nómina, pensión o ingresos recurrentes de mínimo 1.000€/mes.",
+    cap:"2,27% por encima de 5.000€", condiciones:[["Nómina mín.","1.000€"],["Tramo bajo","0,00% primeros 5.000€"],["Tramo alto","2,27% resto"]],
+    verdict:"No es una bonificación en efectivo: es un tipo de interés por tramos. El primer tramo sin remunerar hace que el tipo efectivo real sea más bajo de lo que parece para saldos modestos.",
+    deadline:null, top:false, sinCondicion:false,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
+    url:"https://www.pibank.es/cuenta-nomina/"
+  },
+
+  // ===================== ENTIDADES SIN SUCURSAL EN ESPAÑA (IBAN extranjero) =====================
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Bank Norwegian", producto:"Cuenta Remunerada (con retiradas)",
+    rate:2.51, rateLabel:"TAE", desc:"Permite 6 transferencias de retirada al año sin coste; a partir de la séptima, comisión del 0,5% sobre el importe transferido. Entidad sin sucursal en España, IBAN extranjero.",
+    cap:"Sin tope público", condiciones:[["Retiradas gratis","6 al año"],["Extra retiradas","0,5% comisión"],["IBAN","Extranjero"]],
+    verdict:"El límite de 6 retiradas gratis al año la hace menos práctica si mueves dinero con frecuencia — pensada para ahorro que entra y sale poco.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:true,
+    url:"https://www.banknorwegian.es/cuenta-de-ahorro/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Bank Norwegian", producto:"Cuenta Remunerada (sin límite retiradas)",
+    rate:2.05, rateLabel:"TAE", desc:"Hasta 1.000.000€, sin límite de retiradas gratuitas. Entidad sin sucursal en España, IBAN extranjero.",
+    cap:"Hasta 1.000.000€", condiciones:[["Saldo máx.","1.000.000€"],["Retiradas","Sin límite"],["IBAN","Extranjero"]],
+    verdict:"Algo más baja que su hermana con límite de retiradas, pero sin esa restricción — mejor si necesitas mover el dinero con cierta frecuencia.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:1000000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:true,
+    url:"https://www.banknorwegian.es/cuenta-de-ahorro/"
+  },
+  {
+    cat:"remunerada", tipo:"neobanco", entidad:"Banca Progetto", producto:"Cuenta Remunerada (vía Raisin)",
+    rate:2.28, rateLabel:"TAE", desc:"Contratable a través de la plataforma Raisin. Entidad de origen italiano sin sucursal en España, IBAN extranjero.",
+    cap:"Consultar tope", condiciones:[["Plataforma","Raisin"],["IBAN","Extranjero"],["Retención origen","Puede aplicar según país"]],
+    verdict:"Raisin actúa como intermediario de varios bancos europeos — revisa bien las condiciones fiscales antes de contratar, especialmente la retención en origen.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:true,
+    url:"https://www.raisin.es/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"ProCredit Bank", producto:"Depósito no cancelable 6 meses (vía Raisin)",
+    rate:2.55, rateLabel:"TAE", desc:"El mejor tipo a 6 meses entre las ofertas vía Raisin. Entidad sin sucursal en España, IBAN extranjero.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","6 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
+    verdict:"Tipo competitivo a corto plazo, pero al ser no cancelable y con IBAN extranjero, confirma bien el proceso de apertura y reclamación antes de comprometer dinero.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["corto"], requiereNomina:false, extranjero:true,
+    url:"https://www.raisin.es/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"BluOr Bank", producto:"Depósito no cancelable 9 meses (vía Raisin)",
+    rate:2.56, rateLabel:"TAE", desc:"El mejor tipo a 9 meses entre las ofertas vía Raisin. Entidad letona sin sucursal en España, IBAN extranjero.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","9 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
+    verdict:"Plazo intermedio poco habitual en el mercado español — útil si ni 6 ni 12 meses encajan exactamente con tus planes.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["corto","medio"], requiereNomina:false, extranjero:true,
+    url:"https://www.raisin.es/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"SME Bank", producto:"Depósito no cancelable 12 meses (vía Raisin)",
+    rate:2.99, rateLabel:"TAE", desc:"El mejor tipo a 12 meses entre todas las ofertas vía Raisin, incluyendo las nacionales. Entidad sin sucursal en España, IBAN extranjero.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","12 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
+    verdict:"De los tipos más altos a 12 meses de todo el comparador — el matiz es el IBAN extranjero y las implicaciones fiscales que eso conlleva (revisa la nota de metodología).",
+    deadline:null, top:true, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:true,
+    url:"https://www.raisin.es/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Haitong Bank", producto:"Depósito no cancelable 24 meses",
+    rate:3.05, rateLabel:"TAE", desc:"El mejor tipo a 2 años entre las ofertas vía Raisin. A diferencia de otras entidades de esta lista, Haitong Bank opera con IBAN español pese a no tener red de sucursales física.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","24 meses"],["Cancelable","No"],["IBAN","Español"]],
+    verdict:"Una excepción dentro de este bloque: el IBAN es español, lo que simplifica la fiscalidad frente a otras entidades extranjeras de la misma lista.",
+    deadline:null, top:true, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
+    url:"https://www.raisin.es/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Younited Credit / Haitong Bank", producto:"Depósito no cancelable 36 meses",
+    rate:3.00, rateLabel:"TAE", desc:"El mejor tipo a 3 años entre las ofertas vía Raisin. La versión de Haitong Bank tiene IBAN español; Younited Credit no.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","36 meses"],["Cancelable","No"],["IBAN","Depende de la entidad elegida"]],
+    verdict:"Comprueba bien qué entidad concreta estás contratando dentro de esta oferta — el tratamiento fiscal cambia según si el IBAN es español o extranjero.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:true,
+    url:"https://www.raisin.es/"
+  },
+  {
+    cat:"deposito", tipo:"neobanco", entidad:"Avarda Bank / BankB / Younited Credit", producto:"Depósito no cancelable 60 meses",
+    rate:3.00, rateLabel:"TAE", desc:"El mejor tipo a 5 años entre las ofertas vía Raisin, el plazo más largo de todo el comparador. Entidades sin sucursal en España, IBAN extranjero.",
+    cap:"Consultar mínimo", condiciones:[["Plazo","60 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
+    verdict:"5 años es muchísimo tiempo para tener el dinero inmovilizado — solo tiene sentido como parte de una cartera de ahorro a muy largo plazo, nunca como fondo de emergencia.",
+    deadline:null, top:false, sinCondicion:true,
+    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:true,
+    url:"https://www.raisin.es/"
+  }
+];
+
+let activeCat = "todos";
+let activeTipo = "todos";
+let activeCondicion = "todos";
+let activeNomina = "todos";
+let activeIban = "todos";
+let activeSort = "rate";
+
+// Wizard state
+const wizard = {
+  producto: null,
+  monto: null,
+  plazo: null,
+  nomina: null
+};
+
+const MONTO_REPRESENTATIVO = {
+  bajo: 1500,
+  medio: 8000,
+  alto: 30000,
+  muyalto: 75000
+};
+
+function fmtRate(item){
+  if(item.isMoney){
+    return `${item.rate.toLocaleString('es-ES')}€`;
+  }
+  return `${item.rate.toLocaleString('es-ES',{minimumFractionDigits: item.rate % 1 === 0 ? 0 : 2})}%`;
+}
+
+function passesWizard(item){
+  if(wizard.producto && wizard.producto !== "todos" && item.cat !== wizard.producto) return false;
+  if(wizard.monto){
+    const m = MONTO_REPRESENTATIVO[wizard.monto];
+    if(item.montoMin && m < item.montoMin) return false;
+  }
+  if(wizard.plazo){
+    if(item.plazos && !item.plazos.includes(wizard.plazo)) return false;
+  }
+  if(wizard.nomina === "sin" && item.requiereNomina === true) return false;
+  if(wizard.nomina === "con" && item.requiereNomina !== true) return false;
+  return true;
+}
+
+function render(){
+  let filtered = DATA.filter(d => {
+    if(activeCat !== "todos" && d.cat !== activeCat) return false;
+    if(activeTipo !== "todos" && d.tipo !== activeTipo) return false;
+    if(activeCondicion === "sin" && !d.sinCondicion) return false;
+    if(activeNomina === "sin" && d.requiereNomina === true) return false;
+    if(activeNomina === "con" && d.requiereNomina !== true) return false;
+    if(activeIban === "espanol" && d.extranjero === true) return false;
+    if(!passesWizard(d)) return false;
+    return true;
+  });
+
+  filtered.sort((a,b) => {
+    if(activeSort === "name") return a.entidad.localeCompare(b.entidad);
+    return b.rate - a.rate;
+  });
+
+  document.getElementById('resultsCount').textContent = `${filtered.length} oferta${filtered.length===1?'':'s'}`;
+
+  const container = document.getElementById('cardContainer');
+
+  if(filtered.length === 0){
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>No hay ninguna oferta que cumpla exactamente estos criterios.</p>
+        <p class="empty-sub">Prueba a ampliar el plazo o el importe, o usa los filtros de arriba para revisar opciones cercanas.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(item => {
+    const condHtml = item.condiciones.map(c => `<span class="cond"><b>${c[1]}</b> ${c[0].toLowerCase()}</span>`).join('');
+    const tipoLabel = item.tipo === 'neobanco' ? 'Neobanco' : 'Tradicional';
+    const catLabel = item.cat === 'remunerada' ? 'Cuenta remunerada' : item.cat === 'deposito' ? 'Depósito a plazo' : 'Cuenta + bonificación';
+    const nominaBadge = item.requiereNomina === true
+      ? '<span class="badge nomina-req">Requiere nómina</span>'
+      : item.requiereNomina === 'recomendada'
+        ? '<span class="badge nomina-rec">Nómina recomendada</span>'
+        : '<span class="badge nomina-libre">Sin nómina</span>';
+    const ibanBadge = item.extranjero
+      ? '<span class="badge iban-ext">IBAN extranjero</span>'
+      : '';
+    return `
+      <div class="card ${item.top ? 'is-top' : ''}">
+        <div class="card-main">
+          <div class="card-toprow">
+            <span class="entity-name">${item.entidad}</span>
+            <span class="product-name">${item.producto}</span>
+            <span class="badge ${item.tipo === 'neobanco' ? 'neo' : ''}">${tipoLabel}</span>
+            ${nominaBadge}
+            ${ibanBadge}
+            ${item.top ? '<span class="badge top">Destacada</span>' : ''}
+          </div>
+          <div class="card-desc">${item.desc}</div>
+          <div class="card-conditions">${condHtml}</div>
+          <div class="card-verdict">${item.verdict}</div>
+        </div>
+        <div class="card-rate">
+          <div class="rate-num ${item.cat === 'nomina' ? 'rust' : ''}">${fmtRate(item)}</div>
+          <div class="rate-label">${item.rateLabel}</div>
+          <div class="rate-cap">${item.cap}</div>
+        </div>
+        <div class="card-fgd">
+          <div class="fgd-flag"><span class="fgd-dot"></span>${catLabel}</div>
+          ${item.deadline ? `<div class="deadline">${item.deadline}</div>` : '<div class="no-deadline">Sin fecha límite anunciada</div>'}
+          ${item.url ? `<a class="offer-btn" href="${item.url}" target="_blank" rel="noopener noreferrer">Ver oferta →</a>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if(!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+
+  // Si cambiamos de categoría a mano, el wizard tiene que dejar de filtrar por la categoría antigua,
+  // y soltar cualquier condición que ya no tenga sentido en la nueva categoría:
+  // - el plazo "12 meses" no aplica a cuentas remuneradas, "siempre disponible" no aplica a depósitos
+  // - "con nómina" no aplica a depósitos, porque ningún depósito de la lista la exige
+  wizard.producto = activeCat;
+  if(activeCat === 'remunerada' || activeCat === 'nomina'){
+    wizard.plazo = null;
+  }
+  if(activeCat === 'deposito'){
+    if(wizard.plazo === 'disponible') wizard.plazo = null;
+    if(wizard.nomina === 'con') wizard.nomina = null;
+  }
+
+  // Sincronizar también el filtro visible de nómina, para que no quede una condición fantasma activa
+  activeNomina = wizard.nomina || "todos";
+  document.getElementById('filterNomina').value = activeNomina;
+
+  render();
+});
+
+document.getElementById('filterTipo').addEventListener('change', e => {
+  activeTipo = e.target.value;
+  render();
+});
+
+document.getElementById('filterNomina').addEventListener('change', e => {
+  activeNomina = e.target.value;
+  render();
+});
+
+document.getElementById('filterCondicion').addEventListener('change', e => {
+  activeCondicion = e.target.value;
+  render();
+});
+
+document.getElementById('filterIban').addEventListener('change', e => {
+  activeIban = e.target.value;
+  render();
+});
+
+document.getElementById('sortToggle').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  document.querySelectorAll('#sortToggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeSort = btn.dataset.sort;
+  render();
+});
+
+// sticky shadow on controls
+const controls = document.getElementById('controls');
+window.addEventListener('scroll', () => {
+  controls.classList.toggle('is-stuck', window.scrollY > 380);
+});
+
+// ===================== WIZARD LOGIC =====================
+const MONTO_CHIP = {
+  bajo: "Menos de 3.000€", medio: "3.000€ – 15.000€",
+  alto: "15.000€ – 50.000€", muyalto: "Más de 50.000€"
+};
+const PLAZO_CHIP = {
+  disponible: "Siempre disponible", corto: "Hasta 6 meses",
+  medio: "6 – 18 meses", largo: "Más de 18 meses"
+};
+const PRODUCTO_CHIP = {
+  remunerada: "Cuentas remuneradas", deposito: "Depósitos a plazo",
+  nomina: "Cuentas con bonificación", todos: "Todas las categorías"
+};
+const NOMINA_CHIP = {
+  con: "Con nómina", sin: "Sin nómina", todos: "Con o sin nómina"
+};
+
+function goToPanel(stepIndex){
+  document.querySelectorAll('.wstep-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.wstep-panel[data-panel="${stepIndex}"]`).classList.add('active');
+
+  // Si el producto es "remunerada" nos saltamos el paso de plazo, así que el conteo visible es de 3 pasos, no 4
+  const totalSteps = (wizard.producto === 'remunerada') ? 3 : 4;
+  const visibleStep = (wizard.producto === 'remunerada' && stepIndex === 3) ? 3 : stepIndex + 1;
+  document.getElementById('wstepProgress').textContent = `Paso ${visibleStep} de ${totalSteps}`;
+
+  // El plazo "siempre disponible" no tiene sentido si el usuario ya eligió depósito a plazo
+  if(stepIndex === 2){
+    const optDisponible = document.getElementById('optDisponible');
+    optDisponible.style.display = (wizard.producto === 'deposito') ? 'none' : 'flex';
+  }
+}
+
+function finishWizard(){
+  // Apply tab UI to match wizard product choice
+  const catMap = { remunerada:"remunerada", deposito:"deposito", nomina:"nomina", todos:"todos" };
+  activeCat = catMap[wizard.producto] || "todos";
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === activeCat);
+  });
+
+  // Sync the standalone filter to match the wizard answer
+  activeNomina = wizard.nomina || "todos";
+  document.getElementById('filterNomina').value = activeNomina;
+
+  document.getElementById('wizardSection').style.display = 'none';
+  document.getElementById('resultsHero').style.display = 'block';
+  document.getElementById('controls').style.display = 'block';
+  document.getElementById('resultsSection').style.display = 'block';
+
+  document.getElementById('resultsHeadline').textContent = 'Esto es lo que encaja contigo';
+
+  const chips = [
+    PRODUCTO_CHIP[wizard.producto],
+    MONTO_CHIP[wizard.monto],
+    PLAZO_CHIP[wizard.plazo],
+    NOMINA_CHIP[wizard.nomina]
+  ].filter(Boolean);
+
+  document.getElementById('resultChips').innerHTML = chips
+    .map(c => `<span class="result-chip">${c}</span>`)
+    .join('');
+
+  window.scrollTo({top: 0, behavior:'smooth'});
+  render();
+}
+
+document.getElementById('optProducto').addEventListener('click', e => {
+  const btn = e.target.closest('.wopt');
+  if(!btn) return;
+  document.querySelectorAll('#optProducto .wopt').forEach(o => o.classList.remove('selected'));
+  btn.classList.add('selected');
+  wizard.producto = btn.dataset.value;
+
+  // Las cuentas con bonificación son todas un regalo fijo por domiciliar nómina —
+  // no varían por importe, plazo ni "con o sin nómina" (todas la requieren), así que
+  // no tiene sentido seguir preguntando: mostramos directamente todos los resultados.
+  if(wizard.producto === 'nomina'){
+    wizard.monto = null;
+    wizard.plazo = null;
+    wizard.nomina = null;
+    setTimeout(finishWizard, 200);
+  } else {
+    setTimeout(() => goToPanel(1), 180);
+  }
+});
+
+document.getElementById('optMonto').addEventListener('click', e => {
+  const btn = e.target.closest('.wopt');
+  if(!btn) return;
+  document.querySelectorAll('#optMonto .wopt').forEach(o => o.classList.remove('selected'));
+  btn.classList.add('selected');
+  wizard.monto = btn.dataset.value;
+
+  // Una cuenta remunerada es por definición de disponibilidad inmediata —
+  // no tiene sentido preguntar por el plazo, así que lo fijamos y saltamos ese paso.
+  if(wizard.producto === 'remunerada'){
+    wizard.plazo = 'disponible';
+    setTimeout(() => goToPanel(3), 180);
+  } else {
+    setTimeout(() => goToPanel(2), 180);
+  }
+});
+
+document.getElementById('optPlazo').addEventListener('click', e => {
+  const btn = e.target.closest('.wopt');
+  if(!btn) return;
+  document.querySelectorAll('#optPlazo .wopt').forEach(o => o.classList.remove('selected'));
+  btn.classList.add('selected');
+  wizard.plazo = btn.dataset.value;
+  setTimeout(() => goToPanel(3), 180);
+});
+
+document.getElementById('optNomina').addEventListener('click', e => {
+  const btn = e.target.closest('.wopt');
+  if(!btn) return;
+  document.querySelectorAll('#optNomina .wopt').forEach(o => o.classList.remove('selected'));
+  btn.classList.add('selected');
+  wizard.nomina = btn.dataset.value;
+  setTimeout(finishWizard, 200);
+});
+
+document.getElementById('backTo0').addEventListener('click', () => goToPanel(0));
+document.getElementById('backTo1').addEventListener('click', () => goToPanel(1));
+document.getElementById('backTo2').addEventListener('click', () => {
+  // Si se saltó el paso de plazo (cuenta remunerada), volver al paso de monto en su lugar
+  goToPanel(wizard.producto === 'remunerada' ? 1 : 2);
+});
+
+document.getElementById('skipWizard').addEventListener('click', () => {
+  wizard.producto = null; wizard.monto = null; wizard.plazo = null; wizard.nomina = null;
+  document.getElementById('wizardSection').style.display = 'none';
+  document.getElementById('resultsHero').style.display = 'none';
+  document.getElementById('controls').style.display = 'block';
+  document.getElementById('resultsSection').style.display = 'block';
+  render();
+});
+
+document.getElementById('redoWizard').addEventListener('click', () => {
+  wizard.producto = null; wizard.monto = null; wizard.plazo = null; wizard.nomina = null;
+  activeCat = "todos"; activeTipo = "todos"; activeCondicion = "todos"; activeNomina = "todos"; activeIban = "todos"; activeSort = "rate";
+  document.getElementById('filterTipo').value = "todos";
+  document.getElementById('filterNomina').value = "todos";
+  document.getElementById('filterCondicion').value = "todos";
+  document.getElementById('filterIban').value = "todos";
+  document.querySelectorAll('.wopt').forEach(o => o.classList.remove('selected'));
+  goToPanel(0);
+  document.getElementById('wizardSection').style.display = 'block';
+  document.getElementById('resultsHero').style.display = 'none';
+  document.getElementById('controls').style.display = 'none';
+  document.getElementById('resultsSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior:'smooth'});
+});
+
+render();
+
+// ===================== METHOD TOGGLE =====================
+document.getElementById('methodToggle').addEventListener('click', () => {
+  const btn = document.getElementById('methodToggle');
+  const panel = document.getElementById('methodPanel');
+  btn.classList.toggle('open');
+  panel.classList.toggle('open');
+});
+
+</script>
+
+</body>
+</html>
