@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -544,11 +545,6 @@
     color:var(--teal);
     background:var(--teal-soft);
   }
-  .badge.iban-ext{
-    border-color:#D8C4E8;
-    color:#6B3FA0;
-    background:#F3EBFA;
-  }
   .card-desc{
     font-size:14px;
     color:var(--ink-dim);
@@ -715,7 +711,7 @@
   }
   .method-cols{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr;
     gap:32px 28px;
     padding-top:28px;
   }
@@ -893,9 +889,9 @@
 <div class="controls" id="controls" style="display:none;">
   <div class="wrap">
     <div class="tabs" id="tabs">
-      <button class="tab-btn active" data-cat="todos">Todos <span class="count">(89)</span></button>
-      <button class="tab-btn" data-cat="remunerada">Cuentas remuneradas <span class="count">(39)</span></button>
-      <button class="tab-btn" data-cat="deposito">Depósitos a plazo <span class="count">(33)</span></button>
+      <button class="tab-btn active" data-cat="todos">Todos <span class="count">(81)</span></button>
+      <button class="tab-btn" data-cat="remunerada">Cuentas remuneradas <span class="count">(36)</span></button>
+      <button class="tab-btn" data-cat="deposito">Depósitos a plazo <span class="count">(28)</span></button>
       <button class="tab-btn" data-cat="nomina">Cuentas con bonificación <span class="count">(17)</span></button>
     </div>
     <div class="filter-row">
@@ -922,13 +918,6 @@
           <option value="sin">Solo sin nómina / vinculación</option>
         </select>
       </div>
-      <div class="filter-group">
-        <label>IBAN</label>
-        <select id="filterIban">
-          <option value="todos">Da igual</option>
-          <option value="espanol">Solo IBAN español</option>
-        </select>
-      </div>
       <div class="sort-toggle" id="sortToggle">
         <button class="active" data-sort="rate">Por rentabilidad</button>
         <button data-sort="name">Por entidad</button>
@@ -939,7 +928,7 @@
 
 <section class="results" id="resultsSection" style="display:none;">
   <div class="wrap">
-    <div class="results-count" id="resultsCount">89 ofertas</div>
+    <div class="results-count" id="resultsCount">81 ofertas</div>
     <div id="cardContainer"></div>
   </div>
 </section>
@@ -963,10 +952,6 @@
         <div>
           <h3>Garantía de depósitos</h3>
           <p>Todas las entidades aquí están adheridas a un Fondo de Garantía de Depósitos europeo (100.000€ por titular y entidad), pero el fondo varía por país de origen del banco. Un neobanco con matriz en Alemania, Lituania o Malta usa el fondo de ese país, no el español — la cobertura es equivalente, pero el proceso de reclamación puede no serlo.</p>
-        </div>
-        <div>
-          <h3>Entidades sin sucursal en España</h3>
-          <p>Las ofertas marcadas con "IBAN extranjero" no tienen sucursal en España. Sus intereses no aparecen automáticamente en el borrador de la Renta y, si tienes más de 50.000€ en cuentas extranjeras a 31 de diciembre (o de saldo medio en el cuarto trimestre), puede ser obligatorio presentar el Modelo 720. Algunas, contratadas vía plataformas como Raisin, pueden además aplicar retención en origen según el país.</p>
         </div>
         <div>
           <h3>Actualización de datos</h3>
@@ -1003,7 +988,7 @@ const DATA = [
     verdict:"Tramo alto competitivo para saldos medios, y a diferencia de su versión con Bizum, este no caduca a los 6 meses.",
     deadline:null, top:false, sinCondicion:true,
     montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:false,
-    url:"https://www.grupocooperativocajamar.es/es/particulares/cuentas/cuenta-wefferent-ahorro/"
+    url:"https://www.grupocooperativocajamar.es/es/particulares/productos-y-servicios/cuentas/cuenta-wefferent-ahorro/"
   },
   {
     cat:"remunerada", tipo:"neobanco", entidad:"Pibank", producto:"Cuenta Remunerada",
@@ -1113,7 +1098,7 @@ const DATA = [
     verdict:"Atractiva mientras dura, pero a los 6 meses el grifo se cierra del todo — piensa qué vas a hacer con el dinero después de esa fecha.",
     deadline:"6 meses desde apertura", top:false, sinCondicion:false,
     montoMin:0, montoMax:50000, plazos:["corto"], requiereNomina:false, extranjero:false,
-    url:"https://www.grupocooperativocajamar.es/es/particulares/cuentas/cuenta-online/"
+    url:"https://www.grupocooperativocajamar.es/es/particulares/productos-y-servicios/cuentas/abrir-cuenta-online/"
   },
   {
     cat:"remunerada", tipo:"neobanco", entidad:"Trade Republic", producto:"Cuenta Remunerada (nuevos clientes)",
@@ -1248,7 +1233,7 @@ const DATA = [
     verdict:"El traspaso automático del exceso de 5.000€ a una cuenta sin remunerar es la letra pequeña que hay que vigilar — revisa el saldo con frecuencia o perderás rentabilidad sin darte cuenta.",
     deadline:"12 meses desde apertura", top:false, sinCondicion:false,
     montoMin:0, montoMax:50000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
-    url:"https://www.bankinter.com/banca/cuentas-tarjetas/cuentas"
+    url:"https://www.bankinter.com/banca/cuentas-tarjetas/cuentas/cuenta-nomina"
   },
   {
     cat:"remunerada", tipo:"neobanco", entidad:"MyInvestor", producto:"Cuenta Remunerada (plan premium o inversión)",
@@ -1367,7 +1352,7 @@ const DATA = [
     verdict:"Notablemente más bajo que su versión con nómina (2,78%) — compara bien ambas si ya tienes pensado domiciliar la pensión o nómina en Cajamar.",
     deadline:null, top:false, sinCondicion:true,
     montoMin:6000, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:false,
-    url:"https://www.cajamar.es/es/particulares/ahorro/deposito-hola/"
+    url:"https://www.cajamar.es/es/particulares/productos-y-servicios/ahorro-e-inversion/depositos/deposito-hola/"
   },
   {
     cat:"deposito", tipo:"tradicional", entidad:"Deutsche Bank", producto:"Depósito Confianza 12 meses (base)",
@@ -1376,7 +1361,7 @@ const DATA = [
     verdict:"El tipo base ya es competitivo sin nada más — la versión con condiciones solo merece la pena si ya tenías pensado mover nómina, tarjeta y fondos a Deutsche Bank.",
     deadline:null, top:false, sinCondicion:true,
     montoMin:3000, montoMax:100000, plazos:["medio"], requiereNomina:false, extranjero:false,
-    url:"https://www.deutsche-bank.es/es/soluciones/depositoconfianza"
+    url:"https://www.deutsche-bank.es/es/particulares/ahorro-inversion/productos/depositos.html"
   },
   {
     cat:"deposito", tipo:"tradicional", entidad:"Banco Pichincha", producto:"Depósito cancelable 12 meses",
@@ -1459,7 +1444,7 @@ const DATA = [
     verdict:"El 3,25% exige nómina + tarjeta + fondo de 15.000€ simultáneamente — sin esas tres piezas a la vez, te quedas en el 2,25% base, que ya es bueno por sí solo.",
     deadline:null, top:true, sinCondicion:false,
     montoMin:10000, montoMax:100000, plazos:["medio"], requiereNomina:"recomendada", extranjero:false,
-    url:"https://www.deutsche-bank.es/es/soluciones/depositoconfianza"
+    url:"https://www.deutsche-bank.es/es/particulares/ahorro-inversion/productos/depositos.html"
   },
   {
     cat:"deposito", tipo:"neobanco", entidad:"Banco BiG", producto:"Depósito nuevos clientes 1 mes",
@@ -1504,7 +1489,7 @@ const DATA = [
     verdict:"Pensado específicamente para pensionistas que cambian de banco — claramente mejor que la versión general de Cajamar (2,27%) si encajas en ese perfil.",
     deadline:null, top:false, sinCondicion:false,
     montoMin:6000, montoMax:50000, plazos:["medio"], requiereNomina:true, extranjero:false,
-    url:"https://www.cajamar.es/es/particulares/ahorro/deposito-nueva-pension/"
+    url:"https://www.cajamar.es/es/particulares/productos-y-servicios/ahorro-e-inversion/depositos/deposito-nueva-pension/"
   },
   {
     cat:"deposito", tipo:"neobanco", entidad:"CBNK", producto:"Depósito con nómina 12 meses",
@@ -1641,7 +1626,7 @@ const DATA = [
     verdict:"El tope de 10.000€ limita el beneficio real frente al porcentaje llamativo — calcula en euros, no en TAE, para comparar de forma justa.",
     deadline:null, top:false, sinCondicion:false,
     montoMin:0, montoMax:10000, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
-    url:"https://www.bankinter.com/banca/nav/cuenta-nomina"
+    url:"https://www.bankinter.com/banca/cuentas-tarjetas/cuentas/cuenta-nomina"
   },
   {
     cat:"nomina", tipo:"tradicional", entidad:"Santander", producto:"Cuenta Online (opción efectivo)",
@@ -1686,7 +1671,7 @@ const DATA = [
     verdict:"El requisito de nómina mínima de 1.400€ es más alto que en muchas otras entidades — descarta a quien tiene ingresos más modestos.",
     deadline:null, top:false, sinCondicion:false,
     montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:true, extranjero:false,
-    url:"https://www.cajaviva.es/particulares/promo-nomina-pension"
+    url:"https://www.cajaviva.es/particulares/programa-nomina-pension"
   },
   {
     cat:"nomina", tipo:"tradicional", entidad:"ING", producto:"Cuenta Nómina ING",
@@ -1716,95 +1701,21 @@ const DATA = [
     url:"https://www.pibank.es/cuenta-nomina/"
   },
 
-  // ===================== ENTIDADES SIN SUCURSAL EN ESPAÑA (IBAN extranjero) =====================
-  {
-    cat:"remunerada", tipo:"neobanco", entidad:"Bank Norwegian", producto:"Cuenta Remunerada (con retiradas)",
-    rate:2.51, rateLabel:"TAE", desc:"Permite 6 transferencias de retirada al año sin coste; a partir de la séptima, comisión del 0,5% sobre el importe transferido. Entidad sin sucursal en España, IBAN extranjero.",
-    cap:"Sin tope público", condiciones:[["Retiradas gratis","6 al año"],["Extra retiradas","0,5% comisión"],["IBAN","Extranjero"]],
-    verdict:"El límite de 6 retiradas gratis al año la hace menos práctica si mueves dinero con frecuencia — pensada para ahorro que entra y sale poco.",
-    deadline:null, top:false, sinCondicion:true,
-    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:true,
-    url:"https://www.banknorwegian.es/cuenta-de-ahorro/"
-  },
-  {
-    cat:"remunerada", tipo:"neobanco", entidad:"Bank Norwegian", producto:"Cuenta Remunerada (sin límite retiradas)",
-    rate:2.05, rateLabel:"TAE", desc:"Hasta 1.000.000€, sin límite de retiradas gratuitas. Entidad sin sucursal en España, IBAN extranjero.",
-    cap:"Hasta 1.000.000€", condiciones:[["Saldo máx.","1.000.000€"],["Retiradas","Sin límite"],["IBAN","Extranjero"]],
-    verdict:"Algo más baja que su hermana con límite de retiradas, pero sin esa restricción — mejor si necesitas mover el dinero con cierta frecuencia.",
-    deadline:null, top:false, sinCondicion:true,
-    montoMin:0, montoMax:1000000, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:true,
-    url:"https://www.banknorwegian.es/cuenta-de-ahorro/"
-  },
-  {
-    cat:"remunerada", tipo:"neobanco", entidad:"Banca Progetto", producto:"Cuenta Remunerada (vía Raisin)",
-    rate:2.28, rateLabel:"TAE", desc:"Contratable a través de la plataforma Raisin. Entidad de origen italiano sin sucursal en España, IBAN extranjero.",
-    cap:"Consultar tope", condiciones:[["Plataforma","Raisin"],["IBAN","Extranjero"],["Retención origen","Puede aplicar según país"]],
-    verdict:"Raisin actúa como intermediario de varios bancos europeos — revisa bien las condiciones fiscales antes de contratar, especialmente la retención en origen.",
-    deadline:null, top:false, sinCondicion:true,
-    montoMin:0, montoMax:999999999, plazos:["disponible","corto","medio","largo"], requiereNomina:false, extranjero:true,
-    url:"https://www.raisin.es/"
-  },
-  {
-    cat:"deposito", tipo:"neobanco", entidad:"ProCredit Bank", producto:"Depósito no cancelable 6 meses (vía Raisin)",
-    rate:2.55, rateLabel:"TAE", desc:"El mejor tipo a 6 meses entre las ofertas vía Raisin. Entidad sin sucursal en España, IBAN extranjero.",
-    cap:"Consultar mínimo", condiciones:[["Plazo","6 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
-    verdict:"Tipo competitivo a corto plazo, pero al ser no cancelable y con IBAN extranjero, confirma bien el proceso de apertura y reclamación antes de comprometer dinero.",
-    deadline:null, top:false, sinCondicion:true,
-    montoMin:0, montoMax:999999999, plazos:["corto"], requiereNomina:false, extranjero:true,
-    url:"https://www.raisin.es/"
-  },
-  {
-    cat:"deposito", tipo:"neobanco", entidad:"BluOr Bank", producto:"Depósito no cancelable 9 meses (vía Raisin)",
-    rate:2.56, rateLabel:"TAE", desc:"El mejor tipo a 9 meses entre las ofertas vía Raisin. Entidad letona sin sucursal en España, IBAN extranjero.",
-    cap:"Consultar mínimo", condiciones:[["Plazo","9 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
-    verdict:"Plazo intermedio poco habitual en el mercado español — útil si ni 6 ni 12 meses encajan exactamente con tus planes.",
-    deadline:null, top:false, sinCondicion:true,
-    montoMin:0, montoMax:999999999, plazos:["corto","medio"], requiereNomina:false, extranjero:true,
-    url:"https://www.raisin.es/"
-  },
-  {
-    cat:"deposito", tipo:"neobanco", entidad:"SME Bank", producto:"Depósito no cancelable 12 meses (vía Raisin)",
-    rate:2.99, rateLabel:"TAE", desc:"El mejor tipo a 12 meses entre todas las ofertas vía Raisin, incluyendo las nacionales. Entidad sin sucursal en España, IBAN extranjero.",
-    cap:"Consultar mínimo", condiciones:[["Plazo","12 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
-    verdict:"De los tipos más altos a 12 meses de todo el comparador — el matiz es el IBAN extranjero y las implicaciones fiscales que eso conlleva (revisa la nota de metodología).",
-    deadline:null, top:true, sinCondicion:true,
-    montoMin:0, montoMax:999999999, plazos:["medio"], requiereNomina:false, extranjero:true,
-    url:"https://www.raisin.es/"
-  },
   {
     cat:"deposito", tipo:"neobanco", entidad:"Haitong Bank", producto:"Depósito no cancelable 24 meses",
-    rate:3.05, rateLabel:"TAE", desc:"El mejor tipo a 2 años entre las ofertas vía Raisin. A diferencia de otras entidades de esta lista, Haitong Bank opera con IBAN español pese a no tener red de sucursales física.",
+    rate:3.05, rateLabel:"TAE", desc:"Depósito a 24 meses con IBAN español, gestionado a través de la plataforma Raisin.",
     cap:"Consultar mínimo", condiciones:[["Plazo","24 meses"],["Cancelable","No"],["IBAN","Español"]],
-    verdict:"Una excepción dentro de este bloque: el IBAN es español, lo que simplifica la fiscalidad frente a otras entidades extranjeras de la misma lista.",
+    verdict:"El plazo de 2 años es un compromiso considerable — solo tiene sentido si ese dinero no lo vas a necesitar en ese tiempo.",
     deadline:null, top:true, sinCondicion:true,
     montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:false,
     url:"https://www.raisin.es/"
   },
-  {
-    cat:"deposito", tipo:"neobanco", entidad:"Younited Credit / Haitong Bank", producto:"Depósito no cancelable 36 meses",
-    rate:3.00, rateLabel:"TAE", desc:"El mejor tipo a 3 años entre las ofertas vía Raisin. La versión de Haitong Bank tiene IBAN español; Younited Credit no.",
-    cap:"Consultar mínimo", condiciones:[["Plazo","36 meses"],["Cancelable","No"],["IBAN","Depende de la entidad elegida"]],
-    verdict:"Comprueba bien qué entidad concreta estás contratando dentro de esta oferta — el tratamiento fiscal cambia según si el IBAN es español o extranjero.",
-    deadline:null, top:false, sinCondicion:true,
-    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:true,
-    url:"https://www.raisin.es/"
-  },
-  {
-    cat:"deposito", tipo:"neobanco", entidad:"Avarda Bank / BankB / Younited Credit", producto:"Depósito no cancelable 60 meses",
-    rate:3.00, rateLabel:"TAE", desc:"El mejor tipo a 5 años entre las ofertas vía Raisin, el plazo más largo de todo el comparador. Entidades sin sucursal en España, IBAN extranjero.",
-    cap:"Consultar mínimo", condiciones:[["Plazo","60 meses"],["Cancelable","No"],["IBAN","Extranjero"]],
-    verdict:"5 años es muchísimo tiempo para tener el dinero inmovilizado — solo tiene sentido como parte de una cartera de ahorro a muy largo plazo, nunca como fondo de emergencia.",
-    deadline:null, top:false, sinCondicion:true,
-    montoMin:0, montoMax:999999999, plazos:["largo"], requiereNomina:false, extranjero:true,
-    url:"https://www.raisin.es/"
-  }
 ];
 
 let activeCat = "todos";
 let activeTipo = "todos";
 let activeCondicion = "todos";
 let activeNomina = "todos";
-let activeIban = "todos";
 let activeSort = "rate";
 
 // Wizard state
@@ -1850,7 +1761,6 @@ function render(){
     if(activeCondicion === "sin" && !d.sinCondicion) return false;
     if(activeNomina === "sin" && d.requiereNomina === true) return false;
     if(activeNomina === "con" && d.requiereNomina !== true) return false;
-    if(activeIban === "espanol" && d.extranjero === true) return false;
     if(!passesWizard(d)) return false;
     return true;
   });
@@ -1882,9 +1792,6 @@ function render(){
       : item.requiereNomina === 'recomendada'
         ? '<span class="badge nomina-rec">Nómina recomendada</span>'
         : '<span class="badge nomina-libre">Sin nómina</span>';
-    const ibanBadge = item.extranjero
-      ? '<span class="badge iban-ext">IBAN extranjero</span>'
-      : '';
     return `
       <div class="card ${item.top ? 'is-top' : ''}">
         <div class="card-main">
@@ -1893,7 +1800,6 @@ function render(){
             <span class="product-name">${item.producto}</span>
             <span class="badge ${item.tipo === 'neobanco' ? 'neo' : ''}">${tipoLabel}</span>
             ${nominaBadge}
-            ${ibanBadge}
             ${item.top ? '<span class="badge top">Destacada</span>' : ''}
           </div>
           <div class="card-desc">${item.desc}</div>
@@ -1954,11 +1860,6 @@ document.getElementById('filterNomina').addEventListener('change', e => {
 
 document.getElementById('filterCondicion').addEventListener('change', e => {
   activeCondicion = e.target.value;
-  render();
-});
-
-document.getElementById('filterIban').addEventListener('change', e => {
-  activeIban = e.target.value;
   render();
 });
 
@@ -2117,11 +2018,10 @@ document.getElementById('skipWizard').addEventListener('click', () => {
 
 document.getElementById('redoWizard').addEventListener('click', () => {
   wizard.producto = null; wizard.monto = null; wizard.plazo = null; wizard.nomina = null;
-  activeCat = "todos"; activeTipo = "todos"; activeCondicion = "todos"; activeNomina = "todos"; activeIban = "todos"; activeSort = "rate";
+  activeCat = "todos"; activeTipo = "todos"; activeCondicion = "todos"; activeNomina = "todos"; activeSort = "rate";
   document.getElementById('filterTipo').value = "todos";
   document.getElementById('filterNomina').value = "todos";
   document.getElementById('filterCondicion').value = "todos";
-  document.getElementById('filterIban').value = "todos";
   document.querySelectorAll('.wopt').forEach(o => o.classList.remove('selected'));
   goToPanel(0);
   document.getElementById('wizardSection').style.display = 'block';
